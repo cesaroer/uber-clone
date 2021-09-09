@@ -28,8 +28,8 @@ class LoginController: UIViewController {
         
         view.addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
+        titleLabel.anchor(top: view.safeAreaLayoutGuide.topAnchor, paddingTop: 20)
+        titleLabel.centerX(inView: view)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
