@@ -64,8 +64,7 @@ class LoginController: UIViewController {
                                                             .foregroundColor: UIColor.mainBlueTint]))
         
         button.setAttributedTitle(attributtedTittle, for: .normal)
-        
-        //button.addTarget(self, action: #selector(handleShowSignUp), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handleShowSignUp), for: .touchUpInside)
         
         return button
     }()
@@ -80,8 +79,8 @@ class LoginController: UIViewController {
     //MARK: - Helpers
     func configureUI() {
         
+        configureNavigationBar()
         view.backgroundColor = .backgroundColor
-        self.navigationController?.navigationBar.isHidden = true
         
         view.addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -111,10 +110,24 @@ class LoginController: UIViewController {
                dontHaveAccountBtn.anchor(left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingLeft: 32, paddingBottom: 16 ,paddingRight: 32)
     }
     
+    public func configureNavigationBar() {
+        
+        self.navigationController?.navigationBar.isHidden = true
+        self.navigationController?.navigationBar.barStyle = .black
+    }
+    
     
     //MARK: - System
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
+    }
+    
+    
+    //MARK: - Selectors
+    @objc func handleShowSignUp() {
+        
+        let controller = SignUpController()
+        navigationController?.pushViewController(controller, animated: true)
     }
 
 

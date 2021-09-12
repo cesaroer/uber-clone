@@ -14,6 +14,7 @@
 		371A2F4B26E9C439009C16A0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 371A2F4926E9C439009C16A0 /* LaunchScreen.storyboard */; };
 		371A2F5926E9C6DC009C16A0 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371A2F5826E9C6DC009C16A0 /* LoginController.swift */; };
 		371A2F5B26E9DC0F009C16A0 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371A2F5A26E9DC0F009C16A0 /* Extensions.swift */; };
+		3766C3A326EDC2E10044DE48 /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3766C3A226EDC2E10044DE48 /* SignUpController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		371A2F4C26E9C439009C16A0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		371A2F5826E9C6DC009C16A0 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		371A2F5A26E9DC0F009C16A0 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		3766C3A226EDC2E10044DE48 /* SignUpController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +94,7 @@
 			isa = PBXGroup;
 			children = (
 				371A2F5826E9C6DC009C16A0 /* LoginController.swift */,
+				3766C3A226EDC2E10044DE48 /* SignUpController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -180,6 +183,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3766C3A326EDC2E10044DE48 /* SignUpController.swift in Sources */,
 				371A2F3F26E9C434009C16A0 /* AppDelegate.swift in Sources */,
 				371A2F5926E9C6DC009C16A0 /* LoginController.swift in Sources */,
 				371A2F4126E9C434009C16A0 /* SceneDelegate.swift in Sources */,
