@@ -42,28 +42,77 @@ class LoginController: UIViewController {
                                        isSecureTextEntry: true)
     }()
     
+    private let loginBtn : UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Login ", for: .normal)
+        button.setTitleColor(.white.withAlphaComponent(0.7), for: .normal)
+        button.backgroundColor = .mainBlueTint
+        button.layer.cornerRadius = 5
+        button.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        
+        return button
+    }()
+    
+    private let dontHaveAccountBtn : UIButton = {
+        let button = UIButton(type: .system)
+        let attributtedTittle = NSMutableAttributedString(string: "Don't have an account?  ", attributes: [.font: UIFont.systemFont(ofSize: 16),
+                        .foregroundColor: UIColor.white])
+        
+        attributtedTittle.append(NSMutableAttributedString(string: "Sign Up", attributes: [
+                        .font: UIFont.boldSystemFont(ofSize: 16),
+                                                            .foregroundColor: UIColor.mainBlueTint]))
+        
+        button.setAttributedTitle(attributtedTittle, for: .normal)
+        
+        //button.addTarget(self, action: #selector(handleShowSignUp), for: .touchUpInside)
+        
+        return button
+    }()
+    
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        configureUI()
+    }
+    
+    //MARK: - Helpers
+    func configureUI() {
+        
+        view.backgroundColor = .backgroundColor
+        self.navigationController?.navigationBar.isHidden = true
         
         view.addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.anchor(top: view.safeAreaLayoutGuide.topAnchor, paddingTop: 20)
+        titleLabel.anchor(top: view.safeAreaLayoutGuide.topAnchor, paddingTop: 50)
         titleLabel.centerX(inView: view)
         
-        let stack = UIStackView(arrangedSubviews: [emailContainerView, passwordContainerView])
+        let stack = UIStackView(arrangedSubviews: [emailContainerView,
+                                                   passwordContainerView,
+                                                   loginBtn])
         stack.axis = .vertical
+        stack.spacing = 24
+        stack.backgroundColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+        stack.layer.cornerRadius = 10
         stack.distribution = .fillEqually
-        stack.spacing = 16
+        
+        // To add padding the followong lines
+        stack.isLayoutMarginsRelativeArrangement = true
+        stack.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 15, trailing: 12)
         
         view.addSubview(stack)
-        stack.anchor(top: titleLabel.bottomAnchor, left: view.leftAnchor,
-                     right: view.rightAnchor,paddingTop: 40 ,
+        stack.anchor(left: view.leftAnchor,right: view.rightAnchor,
                      paddingLeft: 16, paddingRight: 16)
+        
+        stack.centerY(inView: view)
+        
+        view.addSubview(dontHaveAccountBtn)
+               dontHaveAccountBtn.anchor(left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingLeft: 32, paddingBottom: 16 ,paddingRight: 32)
     }
     
+    
+    //MARK: - System
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }

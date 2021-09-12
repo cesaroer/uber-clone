@@ -7,7 +7,22 @@
 
 import UIKit
 
+extension UIColor {
+    
+    static func rgb(red: CGFloat, grenn: CGFloat, blue : CGFloat ) -> UIColor {
+        
+        return UIColor.init(red: red/255, green: grenn/255, blue: blue/255, alpha: 1.0)
+    }
+    
+    static let backgroundColor = UIColor.rgb(red: 25, grenn: 25, blue: 25)
+    static let mainBlueTint = UIColor.rgb(red: 17, grenn: 154, blue: 237)
+    
+}
+
 extension UIView {
+    
+    
+    
     func anchor(top: NSLayoutYAxisAnchor? = nil,
                 left: NSLayoutXAxisAnchor? = nil,
                 bottom: NSLayoutYAxisAnchor? = nil,
