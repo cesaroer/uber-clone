@@ -42,15 +42,10 @@ class LoginController: UIViewController {
                                        isSecureTextEntry: true)
     }()
     
-    private let loginBtn : UIButton = {
-        let button = UIButton(type: .system)
+    private let loginBtn : AuthButton = {
+        let button = AuthButton(type: .system)
         button.setTitle("Login ", for: .normal)
-        button.setTitleColor(.white.withAlphaComponent(0.7), for: .normal)
-        button.backgroundColor = .mainBlueTint
-        button.layer.cornerRadius = 5
-        button.heightAnchor.constraint(equalToConstant: 50).isActive = true
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        
         return button
     }()
     
@@ -64,7 +59,7 @@ class LoginController: UIViewController {
                                                             .foregroundColor: UIColor.mainBlueTint]))
         
         button.setAttributedTitle(attributtedTittle, for: .normal)
-        button.addTarget(self, action: #selector(handleShowSignUp), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handleShowLogin), for: .touchUpInside)
         
         return button
     }()
@@ -124,7 +119,7 @@ class LoginController: UIViewController {
     
     
     //MARK: - Selectors
-    @objc func handleShowSignUp() {
+    @objc func handleShowLogin() {
         
         let controller = SignUpController()
         navigationController?.pushViewController(controller, animated: true)
