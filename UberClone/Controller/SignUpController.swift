@@ -46,18 +46,18 @@ public class SignUpController: UIViewController {
     }()
     
     private let emailTextField: UITextField = {
-        let tf = UITextField().textFiled(withPlaceholder: "Email",isSecureTextEntry: false)
+        let tf = UITextField().customTextField(withPlaceholder: "Email",isSecureTextEntry: false)
         tf.textContentType = .emailAddress
         return tf
     }()
     
     private let fullnameTextField: UITextField = {
-        return UITextField().textFiled(withPlaceholder: "Fullname",
+        return UITextField().customTextField(withPlaceholder: "Fullname",
                                        isSecureTextEntry: false)
     }()
     
     private let passwordTextField: UITextField = {
-        return UITextField().textFiled(withPlaceholder: "Password",
+        return UITextField().customTextField(withPlaceholder: "Password",
                                        isSecureTextEntry: true)
     }()
     

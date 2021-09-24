@@ -144,10 +144,11 @@ extension UIView {
 
 extension UITextField {
     
-    func textFiled(withPlaceholder placeholder: String, isSecureTextEntry: Bool) -> UITextField {
+    func customTextField(withPlaceholder placeholder: String, isSecureTextEntry: Bool) -> UITextField {
         
         let tf = UITextField()
         
+        tf.addToolBar()
         tf.borderStyle = .none
         tf.font = UIFont.systemFont(ofSize: 16)
         tf.textColor = .white
