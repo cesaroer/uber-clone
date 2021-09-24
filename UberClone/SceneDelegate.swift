@@ -18,9 +18,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         //Making LoginController the root view controller
         guard let scene = (scene as? UIWindowScene)  else { return }
         window = UIWindow(windowScene: scene)
-        let nav = UINavigationController(rootViewController: LoginController())
+        let nav = UINavigationController(rootViewController: HomeController())
         window?.rootViewController = nav
         window?.makeKeyAndVisible()
+        
+        NotificationCenter.default.addObserver(self, selector:#selector(done(notification:)),name:HomeController.NotificationDone,object: nil)
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -51,6 +53,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to restore the scene back to its current state.
     }
 
+    
+    @objc func done(notification: Notification) {
+        
+        print("DEBUG: Notification done")
+        let nav = UINavigationController(rootViewController: LoginController())
+        
+        self.window?.rootViewController?.dismiss(animated: true) {
+            self.window?.rootViewController = nav
+            self.window?.makeKeyAndVisible()
+        }
+    }
 
 }
 
+  
