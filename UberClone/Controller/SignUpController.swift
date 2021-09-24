@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 public class SignUpController: UIViewController {
     
@@ -45,8 +46,9 @@ public class SignUpController: UIViewController {
     }()
     
     private let emailTextField: UITextField = {
-        return UITextField().textFiled(withPlaceholder: "Email",
-                                       isSecureTextEntry: false)
+        let tf = UITextField().textFiled(withPlaceholder: "Email",isSecureTextEntry: false)
+        tf.textContentType = .emailAddress
+        return tf
     }()
     
     private let fullnameTextField: UITextField = {
@@ -71,6 +73,7 @@ public class SignUpController: UIViewController {
         let button = AuthButton(type: .system)
         button.setTitle("SignUp", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        button.addTarget(self, action: #selector(handleSignUp), for: .touchUpInside)
 
         return button
     }()
@@ -139,5 +142,35 @@ public class SignUpController: UIViewController {
     @objc func handleShowSignUp() {
         
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func handleSignUp() {
+        
+        let accountTypeIndex = accountTypeSegmentedControl.selectedSegmentIndex
+        guard let email = emailTextField.text else {return}
+        guard let password = passwordTextField.text else {return}
+        guard let fullname = fullnameTextField.text else {return}
+
+
+        
+        Auth.auth().createUser(withEmail: email, password: password) { result, error in
+            
+            
+            if let error =  error {
+                print("failer to register user with error \(error)")
+                return
+            }
+            
+            guard let uid = result?.user.uid else {return}
+
+            let values = ["email": email,
+                          "fullname" : fullname,
+                          "accountTypeIndex" : accountTypeIndex] as [String : Any]
+            
+            Database.database().reference().child("users").child(uid).updateChildValues(values) { error, dbRef in
+                
+                print("Successfully registered user and saved data")
+            }
+        }
     }
 }
