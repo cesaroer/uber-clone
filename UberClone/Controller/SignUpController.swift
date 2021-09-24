@@ -48,6 +48,7 @@ public class SignUpController: UIViewController {
     private let emailTextField: UITextField = {
         let tf = UITextField().customTextField(withPlaceholder: "Email",isSecureTextEntry: false)
         tf.textContentType = .emailAddress
+        tf.keyboardType = .emailAddress
         return tf
     }()
     
@@ -157,7 +158,7 @@ public class SignUpController: UIViewController {
             
             
             if let error =  error {
-                print("failer to register user with error \(error)")
+                print("DEBUG: failer to register user with error \(error.localizedDescription)")
                 return
             }
             

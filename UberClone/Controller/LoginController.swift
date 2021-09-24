@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 class LoginController: UIViewController {
     
@@ -33,8 +34,10 @@ class LoginController: UIViewController {
     }()
     
     private let emailTextField: UITextField = {
-        return UITextField().customTextField(withPlaceholder: "Email",
-                                       isSecureTextEntry: false)
+        let tf = UITextField().customTextField(withPlaceholder: "Email",isSecureTextEntry: false)
+        tf.textContentType = .emailAddress
+        tf.keyboardType = .emailAddress
+        return tf
     }()
     
     private let passwordTextField: UITextField = {
@@ -46,6 +49,7 @@ class LoginController: UIViewController {
         let button = AuthButton(type: .system)
         button.setTitle("Login ", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        button.addTarget(self, action: #selector(handleLogig), for: .touchUpInside)
         return button
     }()
     
@@ -124,6 +128,20 @@ class LoginController: UIViewController {
         let controller = SignUpController()
         navigationController?.pushViewController(controller, animated: true)
     }
-
+    
+    @objc func handleLogig() {
+        guard let email = emailTextField.text else {return}
+        guard let password = passwordTextField.text else {return}
+        
+        Auth.auth().signIn(withEmail: email, password: password) { result , error in
+            
+            if let error =  error {
+                print("DEBUG: failer to register user with error \(error.localizedDescription)")
+                return
+            }
+            
+            print("Successfully user logged in")
+        }
+    }
 
 }
