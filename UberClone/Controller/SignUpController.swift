@@ -151,17 +151,13 @@ public class SignUpController: UIViewController {
         guard let email = emailTextField.text else {return}
         guard let password = passwordTextField.text else {return}
         guard let fullname = fullnameTextField.text else {return}
-
-
         
         Auth.auth().createUser(withEmail: email, password: password) { result, error in
-            
-            
             if let error =  error {
                 print("DEBUG: failer to register user with error \(error.localizedDescription)")
                 return
             }
-            
+    
             guard let uid = result?.user.uid else {return}
 
             let values = ["email": email,
@@ -169,8 +165,8 @@ public class SignUpController: UIViewController {
                           "accountTypeIndex" : accountTypeIndex] as [String : Any]
             
             Database.database().reference().child("users").child(uid).updateChildValues(values) { error, dbRef in
-                
-                print("Successfully registered user and saved data")
+
+                self.dismiss(animated: true, completion: nil)
             }
         }
     }

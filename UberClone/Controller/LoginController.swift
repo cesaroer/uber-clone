@@ -134,13 +134,12 @@ class LoginController: UIViewController {
         guard let password = passwordTextField.text else {return}
         
         Auth.auth().signIn(withEmail: email, password: password) { result , error in
-            
             if let error =  error {
                 print("DEBUG: failer to register user with error \(error.localizedDescription)")
                 return
             }
-            
-            print("Successfully user logged in")
+
+            self.dismiss(animated: true)
         }
     }
 

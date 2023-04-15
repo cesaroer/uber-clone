@@ -58,11 +58,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         print("DEBUG: Notification done")
         let nav = UINavigationController(rootViewController: LoginController())
-        
-        self.window?.rootViewController?.dismiss(animated: true) {
-            self.window?.rootViewController = nav
-            self.window?.makeKeyAndVisible()
-        }
+        nav.modalPresentationStyle = .fullScreen
+        self.window?.rootViewController?.present(nav, animated: true)
+    
+//        self.window?.rootViewController?.dismiss(animated: true) {
+//            self.window?.rootViewController = nav
+//            self.window?.makeKeyAndVisible()
+//        }
     }
 
 }
