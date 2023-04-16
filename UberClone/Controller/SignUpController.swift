@@ -166,7 +166,10 @@ public class SignUpController: UIViewController {
             
             Database.database().reference().child("users").child(uid).updateChildValues(values) { error, dbRef in
 
-                self.dismiss(animated: true, completion: nil)
+                guard let window = UIApplication.shared.keyWindow,
+                      let controller = window.rootViewController as? HomeController else { return }
+                controller.configureUI()
+                self.dismiss(animated: true)
             }
         }
     }

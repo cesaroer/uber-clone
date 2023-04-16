@@ -7,12 +7,13 @@
 
 import UIKit
 import Firebase
-
+import MapKit
 
 class HomeController: UIViewController {
     
     
     //MARK: - Properties
+    private let mapView = MKMapView()
     static let NotificationDone = NSNotification.Name(rawValue: "Done")
     
     
@@ -21,8 +22,7 @@ class HomeController: UIViewController {
         super.viewDidLoad()
         
         checkIfUserIsLoggedIn()
-        view.backgroundColor = .red
-        //signOut()
+        signOut()
     }
     
     //MARK: - API
@@ -35,7 +35,7 @@ class HomeController: UIViewController {
                     .post(name: HomeController.NotificationDone, object: nil)
             }
         }else {
-            print("DEBUG: User id is \(Auth.auth().currentUser?.uid)")
+            configureUI()
         }
     }
     
@@ -49,4 +49,8 @@ class HomeController: UIViewController {
     }
     
     //MARK: - Helpers
+    func configureUI() {
+        view.addSubview(mapView)
+        mapView.frame = view.frame
+    }
 }
