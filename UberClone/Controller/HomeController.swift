@@ -11,12 +11,11 @@ import MapKit
 
 class HomeController: UIViewController {
     
-    
     //MARK: - Properties
     private let mapView = MKMapView()
     static let NotificationDone = NSNotification.Name(rawValue: "Done")
     private let locationManager = CLLocationManager()
-    
+    private let locationInputActivationView = LocationInputActivationView()
     
     //MARK: - LifeCycle
     override func viewDidLoad() {
@@ -28,7 +27,6 @@ class HomeController: UIViewController {
     }
     
     //MARK: - API
-    
     func checkIfUserIsLoggedIn() {
         if( Auth.auth().currentUser?.uid == nil) {
             print("DEBUG: User not logger In")
@@ -52,6 +50,12 @@ class HomeController: UIViewController {
     //MARK: - Helpers
     func configureUI() {
         configureMapView()
+        
+        view.addSubview(locationInputActivationView)
+        locationInputActivationView.centerX(inView: view)
+        locationInputActivationView.setDimensions(height: 50, width: view.frame.width - 64)
+        locationInputActivationView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
+                                           paddingTop: 32)
     }
 
     func configureMapView() {
