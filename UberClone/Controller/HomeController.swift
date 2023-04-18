@@ -15,6 +15,7 @@ class HomeController: UIViewController {
     //MARK: - Properties
     private let mapView = MKMapView()
     static let NotificationDone = NSNotification.Name(rawValue: "Done")
+    private let locationManager = CLLocationManager()
     
     
     //MARK: - LifeCycle
@@ -22,7 +23,8 @@ class HomeController: UIViewController {
         super.viewDidLoad()
         
         checkIfUserIsLoggedIn()
-        signOut()
+        //signOut()
+        enableLocationServices()
     }
     
     //MARK: - API
@@ -43,7 +45,6 @@ class HomeController: UIViewController {
         do {
             try Auth.auth().signOut()
         }catch let error {
-            
             print("DEBUG: Error \(error.localizedDescription)")
         }
     }
@@ -52,5 +53,38 @@ class HomeController: UIViewController {
     func configureUI() {
         view.addSubview(mapView)
         mapView.frame = view.frame
+    }
+}
+
+
+//MARK: - LocationServices
+extension HomeController: CLLocationManagerDelegate {
+    
+    func enableLocationServices() {
+        
+        locationManager.delegate = self
+        switch locationManager.authorizationStatus {
+        case .notDetermined:
+            print("DEBUG: notDetermined")
+            locationManager.requestWhenInUseAuthorization()
+        case .restricted,.denied:
+            break
+        case .authorizedAlways:
+            print("DEBUG: authorizedAlways")
+            locationManager.startUpdatingLocation()
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        case .authorizedWhenInUse:
+            print("DEBUG: authorizedWhenInUse")
+            locationManager.requestAlwaysAuthorization()
+        @unknown default:
+            break
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        
+        if status == .authorizedWhenInUse {
+            locationManager.requestAlwaysAuthorization()
+        }
     }
 }
