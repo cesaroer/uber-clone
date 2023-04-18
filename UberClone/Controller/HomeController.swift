@@ -56,29 +56,18 @@ class HomeController: UIViewController {
         let firstX = (self.view.frame.width / 2) - (viewWidht / 2)
         
         locationInputActivationView.alpha = 0
-        locationInputActivationView.frame = CGRect(x: firstX,
-                                                   y: 50,
-                                                   width: viewWidht,
-                                                   height: 50)
+        locationInputActivationView.frame = CGRect(x: firstX, y: 75,
+                                                   width: viewWidht, height: 50)
 
         UIView.animate(withDuration: 1.5) {
             self.locationInputActivationView.alpha = 1
-            self.locationInputActivationView.frame = CGRect(x: firstX,
-                                                            y: 90,
-                                                            width: viewWidht,
-                                                            height: 50)
+            self.locationInputActivationView.frame.origin.y = 90
         } completion: { _ in
             self.locationInputActivationView.centerX(inView: self.view)
-            self.locationInputActivationView.setDimensions(height: 50,
-                                                           width: self.view.frame.width - 64)
+            self.locationInputActivationView.setDimensions(height: 50, width: viewWidht)
             self.locationInputActivationView.anchor(top: self.view.safeAreaLayoutGuide.topAnchor,
                                                     paddingTop: 32)
         }
-
-        
-        
-        
-
     }
 
     func configureMapView() {
