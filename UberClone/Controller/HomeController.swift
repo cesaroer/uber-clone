@@ -13,9 +13,11 @@ class HomeController: UIViewController {
     
     //MARK: - Properties
     private let mapView = MKMapView()
-    static let NotificationDone = NSNotification.Name(rawValue: "Done")
     private let locationManager = CLLocationManager()
+    static let NotificationDone = NSNotification.Name(rawValue: "Done")
+
     private let locationInputActivationView = LocationInputActivationView()
+    private let locationInputView = LocationInputView()
     
     //MARK: - LifeCycle
     override func viewDidLoad() {
@@ -55,6 +57,7 @@ class HomeController: UIViewController {
         let viewWidht = self.view.frame.width - 64
         let firstX = (self.view.frame.width / 2) - (viewWidht / 2)
         
+        locationInputActivationView.delegate = self
         locationInputActivationView.alpha = 0
         locationInputActivationView.frame = CGRect(x: firstX, y: 75,
                                                    width: viewWidht, height: 50)
@@ -75,6 +78,21 @@ class HomeController: UIViewController {
         mapView.frame = view.frame
         mapView.showsUserLocation = true
         mapView.userTrackingMode = .follow
+    }
+
+    func configureLocationInputView() {
+        view.addSubview(locationInputView)
+        locationInputView.alpha = 0
+        locationInputView.delegate = self
+        locationInputView.anchor(top: view.topAnchor, left: view.leftAnchor,
+                                 right: view.rightAnchor, height: 200)
+
+        UIView.animate(withDuration: 0.5) {
+            self.locationInputActivationView.alpha = 0
+            self.locationInputView.alpha = 1
+        } completion: { _ in
+            
+        }
     }
 }
 
@@ -108,5 +126,34 @@ extension HomeController: CLLocationManagerDelegate {
         if status == .authorizedWhenInUse {
             locationManager.requestAlwaysAuthorization()
         }
+    }
+}
+
+//MARK: - LocationInputActivationViewDelegate
+extension HomeController: LocationInputActivationViewDelegate {
+
+    func presentLocationInputView() {
+        configureLocationInputView()
+    }
+}
+
+
+//MARK: - LocationInputViewDelegate
+extension HomeController: LocationInputViewDelegate {
+    func dismissLocationInputView() {
+        
+        
+        UIView.animateKeyframes(withDuration: 0.9, delay: 0) {
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5) {
+                    self.locationInputView.alpha = 0
+                
+            }
+            
+            UIView.addKeyframe(withRelativeStartTime: 0.2, relativeDuration: 0.5) {
+                    self.locationInputActivationView.alpha = 1
+            }
+        }
+        
+        
     }
 }

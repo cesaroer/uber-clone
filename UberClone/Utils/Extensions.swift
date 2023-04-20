@@ -21,6 +21,14 @@ extension UIColor {
 
 extension UIView {
     
+    func addShadow() {
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowOpacity = 0.65
+        layer.shadowOffset = CGSize(width: 1, height: 1)
+        layer.shadowRadius = 10
+        layer.masksToBounds = false
+    }
+    
     
     
     func anchor(top: NSLayoutYAxisAnchor? = nil,
