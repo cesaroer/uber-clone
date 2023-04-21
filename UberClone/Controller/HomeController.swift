@@ -141,19 +141,13 @@ extension HomeController: LocationInputActivationViewDelegate {
 //MARK: - LocationInputViewDelegate
 extension HomeController: LocationInputViewDelegate {
     func dismissLocationInputView() {
-        
-        
         UIView.animateKeyframes(withDuration: 0.9, delay: 0) {
             UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5) {
                     self.locationInputView.alpha = 0
-                
             }
-            
             UIView.addKeyframe(withRelativeStartTime: 0.2, relativeDuration: 0.5) {
                     self.locationInputActivationView.alpha = 1
             }
         }
-        
-        
     }
 }
