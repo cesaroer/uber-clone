@@ -98,6 +98,7 @@ class HomeController: UIViewController {
                                  width: view.frame.width, height: height)
         
         view.addSubview(tableView)
+        tableView.tableFooterView = UIView()
     }
 
     func configureLocationInputView() {
@@ -164,7 +165,15 @@ extension HomeController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        10
+        return section == 0 ? 2 : 5
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        2
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "Test"
     }
 }
 
@@ -182,7 +191,7 @@ extension HomeController: LocationInputViewDelegate {
 
     func dismissLocationInputView() {
         let animationOptions: UIView.AnimationOptions = .curveEaseOut
-        var keyframeAnimationOptions = UIView.KeyframeAnimationOptions(rawValue: animationOptions.rawValue)
+        let keyframeAnimationOptions = UIView.KeyframeAnimationOptions(rawValue: animationOptions.rawValue)
 
         UIView.animateKeyframes(withDuration: 0.9, delay: 0,
                                 options: keyframeAnimationOptions) {
