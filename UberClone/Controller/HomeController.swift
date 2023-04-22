@@ -29,6 +29,7 @@ class HomeController: UIViewController {
         checkIfUserIsLoggedIn()
         //signOut()
         enableLocationServices()
+        fetchUserData()
     }
     
     //MARK: - API
@@ -50,6 +51,10 @@ class HomeController: UIViewController {
         }catch let error {
             print("DEBUG: Error \(error.localizedDescription)")
         }
+    }
+    
+    func fetchUserData() {
+        Service.shared.fetchUserData()
     }
     
     //MARK: - Helpers
