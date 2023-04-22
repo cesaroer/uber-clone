@@ -20,6 +20,8 @@ class HomeController: UIViewController {
     private let locationInputView = LocationInputView()
     private let tableView = UITableView()
     
+    private final let locationInputViewHeight: CGFloat  = 200
+    
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,7 +73,9 @@ class HomeController: UIViewController {
             self.locationInputActivationView.setDimensions(height: 50, width: viewWidht)
             self.locationInputActivationView.anchor(top: self.view.safeAreaLayoutGuide.topAnchor,
                                                     paddingTop: 32)
+            
         }
+        self.configureTableView()
     }
 
     func configureMapView() {
@@ -85,10 +89,15 @@ class HomeController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
+        tableView.alpha = 0
+        tableView.rowHeight = 60
         tableView.register(LocationCell.self,
                            forCellReuseIdentifier: LocationCell.reuseIdentifier)
-        tableView.rowHeight = 60
+        let height = (view.frame.height - locationInputViewHeight)
+        tableView.frame = CGRect(x: 0, y: view.frame.height - 50,
+                                 width: view.frame.width, height: height)
         
+        view.addSubview(tableView)
     }
 
     func configureLocationInputView() {
@@ -98,11 +107,17 @@ class HomeController: UIViewController {
         locationInputView.anchor(top: view.topAnchor, left: view.leftAnchor,
                                  right: view.rightAnchor, height: 200)
 
-        UIView.animate(withDuration: 0.5) {
+        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) {
             self.locationInputActivationView.alpha = 0
             self.locationInputView.alpha = 1
+            UIView.animate(withDuration: 0.4, delay: 0.1, options: .curveEaseOut) {
+                self.tableView.frame.origin.y = self.locationInputViewHeight
+                self.tableView.alpha = 1
+            } completion: { _ in
+                
+            }
         } completion: { _ in
-            
+
         }
     }
 }
@@ -140,29 +155,7 @@ extension HomeController: CLLocationManagerDelegate {
     }
 }
 
-//MARK: - LocationInputActivationViewDelegate
-extension HomeController: LocationInputActivationViewDelegate {
-
-    func presentLocationInputView() {
-        configureLocationInputView()
-    }
-}
-
-
-//MARK: - LocationInputViewDelegate
-extension HomeController: LocationInputViewDelegate {
-    func dismissLocationInputView() {
-        UIView.animateKeyframes(withDuration: 0.9, delay: 0) {
-            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5) {
-                    self.locationInputView.alpha = 0
-            }
-            UIView.addKeyframe(withRelativeStartTime: 0.2, relativeDuration: 0.5) {
-                    self.locationInputActivationView.alpha = 1
-            }
-        }
-    }
-}
-
+//MARK: - TableView
 extension HomeController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: LocationCell.reuseIdentifier,
@@ -174,3 +167,37 @@ extension HomeController: UITableViewDelegate, UITableViewDataSource {
         10
     }
 }
+
+//MARK: - LocationInputActivationViewDelegate
+extension HomeController: LocationInputActivationViewDelegate {
+
+    func presentLocationInputView() {
+        configureLocationInputView()
+    }
+}
+
+
+//MARK: - LocationInputViewDelegate
+extension HomeController: LocationInputViewDelegate {
+
+    func dismissLocationInputView() {
+        let animationOptions: UIView.AnimationOptions = .curveEaseOut
+        var keyframeAnimationOptions = UIView.KeyframeAnimationOptions(rawValue: animationOptions.rawValue)
+
+        UIView.animateKeyframes(withDuration: 0.9, delay: 0,
+                                options: keyframeAnimationOptions) {
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5) {
+                self.locationInputView.alpha = 0
+                self.tableView.frame.origin.y = self.view.frame.height - 50
+                self.tableView.alpha = 0
+            }
+            UIView.addKeyframe(withRelativeStartTime: 0.3, relativeDuration: 0.5) {
+                self.locationInputActivationView.alpha = 1
+            }
+        } completion: { _ in
+            self.locationInputView.removeFromSuperview()
+        }
+    }
+}
+
+
