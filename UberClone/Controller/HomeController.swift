@@ -18,6 +18,7 @@ class HomeController: UIViewController {
 
     private let locationInputActivationView = LocationInputActivationView()
     private let locationInputView = LocationInputView()
+    private let tableView = UITableView()
     
     //MARK: - LifeCycle
     override func viewDidLoad() {
@@ -78,6 +79,16 @@ class HomeController: UIViewController {
         mapView.frame = view.frame
         mapView.showsUserLocation = true
         mapView.userTrackingMode = .follow
+    }
+    
+    func configureTableView() {
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+        tableView.register(LocationCell.self,
+                           forCellReuseIdentifier: LocationCell.reuseIdentifier)
+        tableView.rowHeight = 60
+        
     }
 
     func configureLocationInputView() {
@@ -149,5 +160,17 @@ extension HomeController: LocationInputViewDelegate {
                     self.locationInputActivationView.alpha = 1
             }
         }
+    }
+}
+
+extension HomeController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: LocationCell.reuseIdentifier,
+                                                 for: indexPath) as! LocationCell
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        10
     }
 }
