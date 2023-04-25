@@ -7,10 +7,13 @@
 
 import UIKit
 import Firebase
+import GeoFire
 
 public class SignUpController: UIViewController {
     
     //MARK: - Properties
+    private var location = LocationHandler.shared.locationManager.location
+
     private let titleLabel : UILabel = {
        
         let label = UILabel()
@@ -101,6 +104,7 @@ public class SignUpController: UIViewController {
         super.viewDidLoad()
         
         configureUI()
+        debugPrint("DEBUG: Location is \(location)")
     }
     
     //MARK: - Helpers
@@ -159,18 +163,30 @@ public class SignUpController: UIViewController {
             }
     
             guard let uid = result?.user.uid else {return}
-
+            
             let values = ["email": email,
                           "fullname" : fullname,
                           "accountTypeIndex" : accountTypeIndex] as [String : Any]
             
-            Database.database().reference().child("users").child(uid).updateChildValues(values) { error, dbRef in
-
-                guard let window = UIApplication.shared.keyWindow,
-                      let controller = window.rootViewController as? HomeController else { return }
-                controller.configureUI()
-                self.dismiss(animated: true)
+            if accountTypeIndex == 1 {
+                let geofire = GeoFire(firebaseRef: REF_DRIVER_LOCATIOS)
+                guard let location = self.location else {return}
+                geofire.setLocation(location, forKey: uid) { error in
+                    self.uploadUserDataAndShowHome(uid, values)
+                }
             }
+            
+            self.uploadUserDataAndShowHome(uid, values)
+        }
+    }
+    
+    fileprivate func uploadUserDataAndShowHome(_ uid: String, _ values: [String : Any]) {
+        REF_USERS.child(uid).updateChildValues(values) { error, dbRef in
+            
+            guard let window = UIApplication.shared.keyWindow,
+                  let controller = window.rootViewController as? HomeController else { return }
+            controller.configureUI()
+            self.dismiss(animated: true)
         }
     }
 }
