@@ -20,7 +20,8 @@ struct Service {
         guard let currentUid = uid else { return }
         REF_USERS.child(currentUid).observeSingleEvent(of: .value) { snapshot in
             guard let dict = snapshot.value as? [String: Any] else {return}
-            let user = User(dictionary: dict)
+            //let uid = snapshot.key
+            let user = User(uid: currentUid, dictionary: dict)
             completion(user)
         }
     }
