@@ -6,11 +6,13 @@
 //
 
 import Foundation
+import CoreLocation
 
 struct User {
     var fullname: String
     var email: String
     var accountType : Int
+    var location: CLLocation?
     
     init(fullname: String, email: String, accountType: Int) {
         self.fullname = fullname
