@@ -16,6 +16,10 @@ class LocationInputView: UIView {
 // MARK: - Properties
     weak var delegate: LocationInputViewDelegate?
     
+    var user: User? {
+        didSet { titleLabel.text = user?.fullname}
+    }
+    
     private lazy var backButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage( #imageLiteral(resourceName: "baseline_arrow_back_black_36dp").withRenderingMode(.alwaysOriginal) , for: .normal)
@@ -23,7 +27,7 @@ class LocationInputView: UIView {
         return button
     }()
 
-    let titleLabel: UILabel = {
+    private let titleLabel: UILabel = {
        let label = UILabel()
         label.text = "UberClone user"
         label.textColor = .darkGray
