@@ -19,6 +19,7 @@ class HomeController: UIViewController {
     private let locationInputActivationView = LocationInputActivationView()
     private let locationInputView = LocationInputView()
     private let tableView = UITableView()
+    private var searchResults = [MKPlacemark]()
     private var user: User? {
         didSet {
             locationInputView.user = user
@@ -34,7 +35,7 @@ class HomeController: UIViewController {
 
         checkIfUserIsLoggedIn()
         enableLocationServices()
-        signOut()
+        //signOut()
     }
     
     //MARK: - API
@@ -170,6 +171,29 @@ class HomeController: UIViewController {
     }
 }
 
+//MARK: - MKMap helper functions
+extension HomeController {
+    func searchBy(naturalLanguajeQuery: String, completion: @escaping([MKPlacemark]) -> Void) {
+        var results = [MKPlacemark]()
+        
+        let request = MKLocalSearch.Request()
+        request.region = mapView.region
+        request.naturalLanguageQuery = naturalLanguajeQuery
+        
+        let search = MKLocalSearch(request: request)
+        search.start { response, error in
+            guard let response = response else { return }
+            
+            response.mapItems.forEach { mapItem in
+                results.append(mapItem.placemark)
+            }
+            
+            completion(results)
+        }
+    }
+}
+
+
 //MARK: - MKMapViewDelegate
 extension HomeController: MKMapViewDelegate {
     
@@ -221,7 +245,7 @@ extension HomeController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return section == 0 ? 2 : 5
+        return section == 0 ? 2 : searchResults.count
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -244,6 +268,13 @@ extension HomeController: LocationInputActivationViewDelegate {
 
 //MARK: - LocationInputViewDelegate
 extension HomeController: LocationInputViewDelegate {
+
+    func executeSearch(query: String) {
+        searchBy(naturalLanguajeQuery: query) { placeMarks in
+            self.searchResults = placeMarks
+            self.tableView.reloadData()
+        }
+    }
 
     func dismissLocationInputView() {
         let animationOptions: UIView.AnimationOptions = .curveEaseOut
