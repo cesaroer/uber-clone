@@ -31,11 +31,10 @@ class HomeController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+
         checkIfUserIsLoggedIn()
-        //signOut()
         enableLocationServices()
-        fetchUserData()
-        fetchDrivers()
+        signOut()
     }
     
     //MARK: - API
@@ -46,7 +45,7 @@ class HomeController: UIViewController {
                     .post(name: HomeController.NotificationDone, object: nil)
             }
         }else {
-            configureUI()
+            configure()
         }
     }
     
@@ -95,6 +94,11 @@ class HomeController: UIViewController {
     }
     
     //MARK: - Helpers
+    func configure() {
+        configureUI()
+        fetchUserData()
+        fetchDrivers()
+    }
     func configureUI() {
         configureMapView()
         
