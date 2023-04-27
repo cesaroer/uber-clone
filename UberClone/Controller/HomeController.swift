@@ -71,10 +71,26 @@ class HomeController: UIViewController {
     func fetchDrivers() {
 
         guard let location  = locationManager?.location else { return }
-        Service.shared.fetchDrivers(location: location) { drivers in
-            guard let coordinate = drivers.location?.coordinate else { return }
-            let annotation = DriverAnnotation(coordinate: coordinate, uid: drivers.uid)
-            self.mapView.addAnnotation(annotation)
+        Service.shared.fetchDrivers(location: location) { driver in
+            guard let coordinate = driver.location?.coordinate else { return }
+            let annotation = DriverAnnotation(coordinate: coordinate, uid: driver.uid)
+            
+            var driverIsVisible: Bool {
+                
+                return self.mapView.annotations.contains { annotation in
+                    guard let driverAnnotation = annotation as? DriverAnnotation
+                          else { return false }
+                    if driverAnnotation.uid == driver.uid {
+                        driverAnnotation.updateAnnotationPosition(withCoordinate: coordinate)
+                        return true
+                    }
+                    return false
+                }
+            }
+            
+            if !driverIsVisible {
+                self.mapView.addAnnotation(annotation)
+            }
         }
     }
     
@@ -109,6 +125,7 @@ class HomeController: UIViewController {
         mapView.frame = view.frame
         mapView.showsUserLocation = true
         mapView.userTrackingMode = .follow
+        mapView.delegate = self
     }
     
     func configureTableView() {
@@ -149,6 +166,19 @@ class HomeController: UIViewController {
     }
 }
 
+//MARK: - MKMapViewDelegate
+extension HomeController: MKMapViewDelegate {
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        if let annotation = annotation as? DriverAnnotation {
+            let view = MKAnnotationView(annotation: annotation, reuseIdentifier: DriverAnnotation.description())
+            view.image = #imageLiteral(resourceName: "chevron-sign-to-right")
+            return view
+        }
+        
+        return nil
+    }
+}
 
 //MARK: - LocationServices
 extension HomeController {
