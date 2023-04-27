@@ -9,6 +9,15 @@ import UIKit
 import Firebase
 import MapKit
 
+enum ActionButtonStates {
+    case showMenu
+    case dismissActionView
+    
+    init() {
+        self = .showMenu
+    }
+}
+
 class HomeController: UIViewController {
     
     //MARK: - Properties
@@ -27,6 +36,22 @@ class HomeController: UIViewController {
     }
     
     private final let locationInputViewHeight: CGFloat  = 200
+    private var actionButtonState = ActionButtonStates()
+    
+    private let actionButton: UIButton = {
+        let button = UIButton(type: .system)
+        let image = #imageLiteral(resourceName: "baseline_menu_black_36dp")
+        button.setImage(image, for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.backgroundColor = .white
+        button.tintColor = .black
+        button.layer.cornerRadius = 0.5 * 45
+        button.clipsToBounds = true
+        button.addShadow()
+        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        button.addTarget(self, action: #selector(actionButtonPressed), for: .touchUpInside)
+        return button
+    }()
     
     //MARK: - LifeCycle
     override func viewDidLoad() {
@@ -103,23 +128,28 @@ class HomeController: UIViewController {
     func configureUI() {
         configureMapView()
         
+        view.addSubview(actionButton)
+        actionButton.anchor(top: self.view.safeAreaLayoutGuide.topAnchor,
+                            left: view.leftAnchor, paddingTop: 4, paddingLeft: 16,
+                            width: 45, height: 45)
+        
         view.addSubview(locationInputActivationView)
         let viewWidht = self.view.frame.width - 64
         let firstX = (self.view.frame.width / 2) - (viewWidht / 2)
         
         locationInputActivationView.delegate = self
         locationInputActivationView.alpha = 0
-        locationInputActivationView.frame = CGRect(x: firstX, y: 75,
+        locationInputActivationView.frame = CGRect(x: firstX, y: 110,
                                                    width: viewWidht, height: 50)
 
         UIView.animate(withDuration: 1.5) {
             self.locationInputActivationView.alpha = 1
-            self.locationInputActivationView.frame.origin.y = 90
+            self.locationInputActivationView.frame.origin.y = 125
         } completion: { _ in
             self.locationInputActivationView.centerX(inView: self.view)
             self.locationInputActivationView.setDimensions(height: 50, width: viewWidht)
             self.locationInputActivationView.anchor(top: self.view.safeAreaLayoutGuide.topAnchor,
-                                                    paddingTop: 32)
+                                                    paddingTop: 67)
             
         }
         self.configureTableView()
@@ -170,7 +200,7 @@ class HomeController: UIViewController {
         }
     }
 
-    func dismissLocationView(completionBlock: ((Bool) -> Void)? = nil) {
+    func dismissLocationView(showSearchBar: Bool, completionBlock: ((Bool) -> Void)? = nil) {
         let animationOptions: UIView.AnimationOptions = .curveEaseOut
         let keyframeAnimationOptions = UIView.KeyframeAnimationOptions(rawValue: animationOptions.rawValue)
         
@@ -182,11 +212,48 @@ class HomeController: UIViewController {
                 self.tableView.frame.origin.y = self.view.frame.height - 50
                 self.tableView.alpha = 0
             }
-            UIView.addKeyframe(withRelativeStartTime: 0.3, relativeDuration: 0.5) {
-                self.locationInputActivationView.alpha = 1
+    
+            if showSearchBar {
+                UIView.addKeyframe(withRelativeStartTime: 0.3, relativeDuration: 0.5) {
+                    self.locationInputActivationView.alpha = 1
+                }
+            }
+        }, completion: completionBlock)
+    }
+
+    fileprivate func configureActionButton(config: ActionButtonStates) {
+        switch config {
+        case .showMenu:
+            let image = #imageLiteral(resourceName: "baseline_menu_black_36dp")
+            self.actionButton.setImage(image, for: .normal)
+            self.actionButtonState = .showMenu
+        case .dismissActionView:
+            let image = #imageLiteral(resourceName: "baseline_arrow_back_black_36dp-1")
+            self.actionButton.setImage(image, for: .normal)
+            self.actionButtonState = .dismissActionView
+        }
+    }
+    
+    // MARK: - Selectors
+    @objc func actionButtonPressed() {
+        switch actionButtonState {
+        case .showMenu:
+            let image = #imageLiteral(resourceName: "baseline_menu_black_36dp")
+            actionButton.setImage(image, for: .normal)
+        case .dismissActionView:
+            
+            mapView.annotations.forEach { annotation in
+                if let ann = annotation as? MKPointAnnotation {
+                    mapView.removeAnnotation(ann)
+                }
             }
             
-        }, completion: completionBlock)
+            UIView.animate(withDuration: 0.3) {
+                self.locationInputActivationView.alpha = 1
+                self.configureActionButton(config: .showMenu)
+            }
+        }
+    
     }
 }
 
@@ -282,7 +349,9 @@ extension HomeController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
         let selectedPlaceMArk = searchResults[indexPath.row]
-        dismissLocationView { _ in
+        
+        configureActionButton(config: .dismissActionView)
+        dismissLocationView(showSearchBar: false) { _ in
             self.locationInputView.removeFromSuperview()
             let annotation = MKPointAnnotation()
             annotation.coordinate = selectedPlaceMArk.coordinate
@@ -304,7 +373,7 @@ extension HomeController: LocationInputActivationViewDelegate {
 //MARK: - LocationInputViewDelegate
 extension HomeController: LocationInputViewDelegate {
     func dismissLocationInputView() {
-        dismissLocationView { _ in
+        dismissLocationView(showSearchBar: true) { _ in
             self.locationInputView.removeFromSuperview()
         }
     }
