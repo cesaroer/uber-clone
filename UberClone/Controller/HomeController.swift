@@ -189,6 +189,7 @@ class HomeController: UIViewController {
         UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) {
             self.locationInputActivationView.alpha = 0
             self.locationInputView.alpha = 1
+            self.actionButton.alpha = 0
             UIView.animate(withDuration: 0.4, delay: 0.1, options: .curveEaseOut) {
                 self.tableView.frame.origin.y = self.locationInputViewHeight
                 self.tableView.alpha = 1
@@ -209,6 +210,7 @@ class HomeController: UIViewController {
                                 animations: {
             UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5) {
                 self.locationInputView.alpha = 0
+                self.actionButton.alpha = 1
                 self.tableView.frame.origin.y = self.view.frame.height - 50
                 self.tableView.alpha = 0
             }
