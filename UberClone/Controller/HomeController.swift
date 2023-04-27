@@ -169,6 +169,25 @@ class HomeController: UIViewController {
 
         }
     }
+
+    func dismissLocationView(completionBlock: ((Bool) -> Void)? = nil) {
+        let animationOptions: UIView.AnimationOptions = .curveEaseOut
+        let keyframeAnimationOptions = UIView.KeyframeAnimationOptions(rawValue: animationOptions.rawValue)
+        
+        UIView.animateKeyframes(withDuration: 0.9, delay: 0,
+                                options: keyframeAnimationOptions,
+                                animations: {
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5) {
+                self.locationInputView.alpha = 0
+                self.tableView.frame.origin.y = self.view.frame.height - 50
+                self.tableView.alpha = 0
+            }
+            UIView.addKeyframe(withRelativeStartTime: 0.3, relativeDuration: 0.5) {
+                self.locationInputActivationView.alpha = 1
+            }
+            
+        }, completion: completionBlock)
+    }
 }
 
 //MARK: - MKMap helper functions
@@ -241,6 +260,10 @@ extension HomeController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: LocationCell.reuseIdentifier,
                                                  for: indexPath) as! LocationCell
+        
+        if indexPath.section == 1 {
+            cell.placeMark = searchResults[indexPath.row]
+        }
         return cell
     }
     
@@ -255,6 +278,18 @@ extension HomeController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return "Test"
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+        let selectedPlaceMArk = searchResults[indexPath.row]
+        dismissLocationView { _ in
+            self.locationInputView.removeFromSuperview()
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = selectedPlaceMArk.coordinate
+            self.mapView.addAnnotation(annotation)
+            self.mapView.selectAnnotation(annotation, animated: true)
+        }
+    }
 }
 
 //MARK: - LocationInputActivationViewDelegate
@@ -268,30 +303,17 @@ extension HomeController: LocationInputActivationViewDelegate {
 
 //MARK: - LocationInputViewDelegate
 extension HomeController: LocationInputViewDelegate {
+    func dismissLocationInputView() {
+        dismissLocationView { _ in
+            self.locationInputView.removeFromSuperview()
+        }
+    }
+    
 
     func executeSearch(query: String) {
         searchBy(naturalLanguajeQuery: query) { placeMarks in
             self.searchResults = placeMarks
             self.tableView.reloadData()
-        }
-    }
-
-    func dismissLocationInputView() {
-        let animationOptions: UIView.AnimationOptions = .curveEaseOut
-        let keyframeAnimationOptions = UIView.KeyframeAnimationOptions(rawValue: animationOptions.rawValue)
-
-        UIView.animateKeyframes(withDuration: 0.9, delay: 0,
-                                options: keyframeAnimationOptions) {
-            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5) {
-                self.locationInputView.alpha = 0
-                self.tableView.frame.origin.y = self.view.frame.height - 50
-                self.tableView.alpha = 0
-            }
-            UIView.addKeyframe(withRelativeStartTime: 0.3, relativeDuration: 0.5) {
-                self.locationInputActivationView.alpha = 1
-            }
-        } completion: { _ in
-            self.locationInputView.removeFromSuperview()
         }
     }
 }

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import MapKit
 
 extension UIColor {
     
@@ -170,4 +171,20 @@ extension UITextField {
     }
     
     
+}
+
+
+extension MKPlacemark {
+    var address: String? {
+        get {
+            guard let subThoroughfare = subThoroughfare,
+                    let thoroughfare = thoroughfare ,
+                    let locality = locality,
+                    let administrativeArea = administrativeArea
+            else { return nil }
+            
+            return "\(subThoroughfare) \(thoroughfare), \(locality), \(administrativeArea)"
+            
+        }
+    }
 }
