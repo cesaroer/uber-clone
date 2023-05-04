@@ -129,10 +129,9 @@ class HomeController: UIViewController {
         configureMapView()
         
         view.addSubview(actionButton)
-        actionButton.anchor(top: self.view.safeAreaLayoutGuide.topAnchor,
-                            left: view.leftAnchor, paddingTop: 4, paddingLeft: 16,
-                            width: 45, height: 45)
-        
+        actionButton.alpha = 0
+        actionButton.frame = CGRect(x: 0, y: 63, width: 45, height: 45)
+
         view.addSubview(locationInputActivationView)
         let viewWidht = self.view.frame.width - 64
         let firstX = (self.view.frame.width / 2) - (viewWidht / 2)
@@ -143,14 +142,19 @@ class HomeController: UIViewController {
                                                    width: viewWidht, height: 50)
 
         UIView.animate(withDuration: 1.5) {
+            self.actionButton.alpha = 1
+            self.actionButton.frame.origin.x = 16
+            
             self.locationInputActivationView.alpha = 1
             self.locationInputActivationView.frame.origin.y = 125
         } completion: { _ in
+            let topAnc = self.view.safeAreaLayoutGuide.topAnchor
+            self.actionButton.anchor(top: topAnc, left: self.view.leftAnchor, paddingTop: 4,
+                                     paddingLeft: 16, width: 45, height: 45)
+    
             self.locationInputActivationView.centerX(inView: self.view)
             self.locationInputActivationView.setDimensions(height: 50, width: viewWidht)
-            self.locationInputActivationView.anchor(top: self.view.safeAreaLayoutGuide.topAnchor,
-                                                    paddingTop: 67)
-            
+            self.locationInputActivationView.anchor(top: topAnc, paddingTop: 66)
         }
         self.configureTableView()
     }
