@@ -140,6 +140,9 @@ class LocationInputView: UIView {
         delegate?.dismissLocationInputView()
     }
 
+    func startTyping(){
+        destinationLocationTextField.becomeFirstResponder()
+    }
 }
 
 // MARK: - UITextFieldDelegate
