@@ -250,13 +250,13 @@ class HomeController: UIViewController {
             actionButton.setImage(image, for: .normal)
         case .dismissActionView:
             removeAnnotationsAndOverlays()
-            
+            mapView.showAnnotations(mapView.annotations, animated: true)
+
             UIView.animate(withDuration: 0.3) {
                 self.locationInputActivationView.alpha = 1
                 self.configureActionButton(config: .showMenu)
             }
         }
-    
     }
 }
 
@@ -285,12 +285,13 @@ extension HomeController {
         let request = MKDirections.Request()
         request.source = MKMapItem.forCurrentLocation()
         request.destination = destination
-        request.transportType = .automobile
+        request.transportType = .any
 
         let directionRequest = MKDirections(request: request)
         directionRequest.calculate { response, error in
             guard let response = response else  { return }
             self.route = response.routes[0]
+
             guard let polyline = self.route?.polyline else { return }
             self.mapView.addOverlay(polyline)
         }
@@ -391,8 +392,24 @@ extension HomeController: UITableViewDelegate, UITableViewDataSource {
         let selectedPlaceMArk = searchResults[indexPath.row]
         
         configureActionButton(config: .dismissActionView)
-        let destination = MKMapItem(placemark: selectedPlaceMArk)
-        generatePolyline(toDestination: destination)
+        //let destination = MKMapItem(placemark: selectedPlaceMArk)
+        //generatePolyline(toDestination: destination)
+        
+        let request = MKDirections.Request()
+        request.source = MKMapItem.forCurrentLocation()
+        request.destination = MKMapItem(placemark:
+                                            MKPlacemark(coordinate: selectedPlaceMArk.coordinate))
+        request.transportType = .automobile
+        //request.requestsAlternateRoutes = true
+
+        let directionRequest = MKDirections(request: request)
+        directionRequest.calculate { response, error in
+            guard let response = response else  { return }
+            self.route = response.routes[0]
+
+            guard let polyline = self.route?.polyline else { return }
+            self.mapView.addOverlay(polyline)
+        }
 
         dismissLocationView(showSearchBar: false) { _ in
             self.locationInputView.removeFromSuperview()
@@ -400,8 +417,36 @@ extension HomeController: UITableViewDelegate, UITableViewDataSource {
             annotation.coordinate = selectedPlaceMArk.coordinate
             self.mapView.addAnnotation(annotation)
             self.mapView.selectAnnotation(annotation, animated: true)
+            
+//            let annotations = self.mapView.annotations.filter { $0.isKind(of: DriverAnnotation.self)}
+            
+            var annotations = [MKAnnotation]()
+            self.mapView.annotations.forEach { annotation in
+                if let anno = annotation as? MKUserLocation {
+                    annotations.append(anno)
+                }
+
+                if let anno = annotation as? MKPointAnnotation {
+                    annotations.append(anno)
+                }
+                
+            }
+    
+            if let polyline = self.route?.polyline {
+                self.setVisibleMapArea(polyline: polyline,
+                                  edgeInsets: UIEdgeInsets(top: 50.0, left: 50.0, bottom: 50.0, right: 50.0))
+            }
+ 
+
+            //self.mapView.showAnnotations(annotations, animated: true)
         }
     }
+    
+    func setVisibleMapArea(polyline: MKPolyline, edgeInsets: UIEdgeInsets, animated: Bool = true) {
+        DispatchQueue.main.async {
+            self.mapView.setVisibleMapRect(polyline.boundingMapRect, edgePadding: edgeInsets, animated: animated)
+        }
+   }
 }
 
 //MARK: - LocationInputActivationViewDelegate
