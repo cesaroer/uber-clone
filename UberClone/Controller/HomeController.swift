@@ -39,6 +39,7 @@ class HomeController: UIViewController {
     }
     
     private final let locationInputViewHeight: CGFloat  = 200
+    private final let rideActionViewHeight: CGFloat  = 300
     private var actionButtonState = ActionButtonStates()
     
     private let actionButton: UIButton = {
@@ -211,8 +212,8 @@ class HomeController: UIViewController {
 
     func configureRideActionView() {
         view.addSubview(rideActionView)
-        rideActionView.frame = CGRect(x: 0, y: view.frame.height - 300,
-                                      width: view.frame.width, height: 300)
+        rideActionView.frame = CGRect(x: 0, y: view.frame.height,
+                                      width: view.frame.width, height: rideActionViewHeight)
     }
 
     func dismissLocationView(showSearchBar: Bool, completionBlock: ((Bool) -> Void)? = nil) {
@@ -249,6 +250,13 @@ class HomeController: UIViewController {
             self.actionButtonState = .dismissActionView
         }
     }
+
+    func animateRideActionView(shouldShow: Bool) {
+        let yOrigin = shouldShow ? self.rideActionViewHeight : 0
+        UIView.animate(withDuration: 0.3) {
+            self.rideActionView.frame.origin.y = self.view.frame.height - yOrigin
+        }
+    }
     
     // MARK: - Selectors
     @objc func actionButtonPressed() {
@@ -263,6 +271,8 @@ class HomeController: UIViewController {
             UIView.animate(withDuration: 0.3) {
                 self.locationInputActivationView.alpha = 1
                 self.configureActionButton(config: .showMenu)
+                self.animateRideActionView(shouldShow: false)
+
             }
         }
     }
@@ -421,6 +431,8 @@ extension HomeController: UITableViewDelegate, UITableViewDataSource {
             if let polyline = self.route?.polyline {
                 self.setVisibleMapArea(polyline: polyline)
             }
+
+            self.animateRideActionView(shouldShow: true)
         }
     }
 }
