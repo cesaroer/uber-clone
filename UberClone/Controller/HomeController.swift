@@ -28,6 +28,7 @@ class HomeController: UIViewController {
 
     private let locationInputActivationView = LocationInputActivationView()
     private let locationInputView = LocationInputView()
+    private let rideActionView = RideActionView()
 
     private let tableView = UITableView()
     private var searchResults = [MKPlacemark]()
@@ -129,6 +130,7 @@ class HomeController: UIViewController {
     }
     func configureUI() {
         configureMapView()
+        configureRideActionView()
         
         view.addSubview(actionButton)
         actionButton.alpha = 0
@@ -205,6 +207,12 @@ class HomeController: UIViewController {
         } completion: { _ in
             self.locationInputView.startTyping()
         }
+    }
+
+    func configureRideActionView() {
+        view.addSubview(rideActionView)
+        rideActionView.frame = CGRect(x: 0, y: view.frame.height - 300,
+                                      width: view.frame.width, height: 300)
     }
 
     func dismissLocationView(showSearchBar: Bool, completionBlock: ((Bool) -> Void)? = nil) {
@@ -437,8 +445,10 @@ extension HomeController: LocationInputViewDelegate {
 
     func executeSearch(query: String) {
         searchBy(naturalLanguajeQuery: query) { placeMarks in
-            self.searchResults = placeMarks
-            self.tableView.reloadData()
+            DispatchQueue.main.async {
+                self.searchResults = placeMarks
+                self.tableView.reloadData()
+            }
         }
     }
 }
