@@ -8,9 +8,14 @@
 import UIKit
 import MapKit
 
+protocol RideActionviewDelegate: AnyObject {
+    func uploadTrip(_ view: RideActionView)
+}
+
 class RideActionView: UIView {
 
     //MARK: - Properties
+    weak var delegate: RideActionviewDelegate?
     var destination: MKPlacemark? {
         didSet {
             titleLabel.text = destination?.name
@@ -110,6 +115,6 @@ class RideActionView: UIView {
     }
     //MARK: - Helpers
     @objc func actionButtonPressed() {
-        print("adsadsf")
+        delegate?.uploadTrip(self)
     }
 }

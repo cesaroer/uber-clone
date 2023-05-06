@@ -212,6 +212,7 @@ class HomeController: UIViewController {
 
     func configureRideActionView() {
         view.addSubview(rideActionView)
+        rideActionView.delegate = self
         rideActionView.frame = CGRect(x: 0, y: view.frame.height,
                                       width: view.frame.width, height: rideActionViewHeight)
     }
@@ -460,6 +461,21 @@ extension HomeController: LocationInputViewDelegate {
                 self.searchResults = placeMarks
                 self.tableView.reloadData()
             }
+        }
+    }
+}
+
+extension HomeController: RideActionviewDelegate {
+    func uploadTrip(_ view: RideActionView) {
+        guard let pickupCoordinates = locationManager?.location?.coordinate,
+              let destinationCoordinates = view.destination?.coordinate else { return }
+        Service.shared.uploadTrip(pickupCoordinates: pickupCoordinates,
+                                  destinationCoordinates: destinationCoordinates) { error, dbRef in
+            if let error = error {
+                print("DEBUG error \(error.localizedDescription)")
+            }
+            
+            print("Uploaded succesfully")
         }
     }
 }
