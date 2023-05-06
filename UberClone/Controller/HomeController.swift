@@ -35,6 +35,10 @@ class HomeController: UIViewController {
     private var user: User? {
         didSet {
             locationInputView.user = user
+            if user?.accountType == .passgenger {
+                fetchDrivers()
+                configureLocationInputActivationView()
+            }
         }
     }
     
@@ -98,8 +102,8 @@ class HomeController: UIViewController {
     }
     
     func fetchDrivers() {
-
-        guard let location  = locationManager?.location else { return }
+        guard let location  = locationManager?.location,
+              user?.accountType == .passgenger else { return }
         Service.shared.fetchDrivers(location: location) { driver in
             guard let coordinate = driver.location?.coordinate else { return }
             let annotation = DriverAnnotation(coordinate: coordinate, uid: driver.uid)
@@ -127,7 +131,6 @@ class HomeController: UIViewController {
     func configure() {
         configureUI()
         fetchUserData()
-        fetchDrivers()
     }
     func configureUI() {
         configureMapView()
@@ -137,31 +140,38 @@ class HomeController: UIViewController {
         actionButton.alpha = 0
         actionButton.frame = CGRect(x: 0, y: 63, width: 45, height: 45)
 
-        view.addSubview(locationInputActivationView)
-        let viewWidht = self.view.frame.width - 64
-        let firstX = (self.view.frame.width / 2) - (viewWidht / 2)
-        
-        locationInputActivationView.delegate = self
-        locationInputActivationView.alpha = 0
-        locationInputActivationView.frame = CGRect(x: firstX, y: 110,
-                                                   width: viewWidht, height: 50)
-
-        UIView.animate(withDuration: 1.5) {
+        UIView.animate(withDuration: 1.5, delay: 0.3) {
             self.actionButton.alpha = 1
             self.actionButton.frame.origin.x = 16
-            
-            self.locationInputActivationView.alpha = 1
-            self.locationInputActivationView.frame.origin.y = 125
+
         } completion: { _ in
             let topAnc = self.view.safeAreaLayoutGuide.topAnchor
             self.actionButton.anchor(top: topAnc, left: self.view.leftAnchor, paddingTop: 4,
                                      paddingLeft: 16, width: 45, height: 45)
-    
+        }
+        self.configureTableView()
+    }
+
+    func configureLocationInputActivationView() {
+        let viewWidht = self.view.frame.width - 64
+        let firstX = (self.view.frame.width / 2) - (viewWidht / 2)
+        
+        view.addSubview(locationInputActivationView)
+        locationInputActivationView.delegate = self
+        locationInputActivationView.alpha = 0
+        locationInputActivationView.frame = CGRect(x: firstX, y: 110,
+                                                   width: viewWidht, height: 50)
+        UIView.animate(withDuration: 1.5) {
+            self.locationInputActivationView.alpha = 1
+            self.locationInputActivationView.frame.origin.y = 125
+            
+        } completion: { _ in
+            let topAnc = self.view.safeAreaLayoutGuide.topAnchor
             self.locationInputActivationView.centerX(inView: self.view)
             self.locationInputActivationView.setDimensions(height: 50, width: viewWidht)
             self.locationInputActivationView.anchor(top: topAnc, paddingTop: 66)
+            
         }
-        self.configureTableView()
     }
 
     func configureMapView() {
