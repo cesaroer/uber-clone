@@ -251,8 +251,14 @@ class HomeController: UIViewController {
         }
     }
 
-    func animateRideActionView(shouldShow: Bool) {
+    func animateRideActionView(shouldShow: Bool, destination: MKPlacemark? = nil) {
         let yOrigin = shouldShow ? self.rideActionViewHeight : 0
+        
+        if shouldShow {
+            guard let destination = destination else { return }
+            self.rideActionView.destination = destination
+        }
+        
         UIView.animate(withDuration: 0.3) {
             self.rideActionView.frame.origin.y = self.view.frame.height - yOrigin
         }
@@ -415,8 +421,8 @@ extension HomeController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedPlaceMArkCoordinate = searchResults[indexPath.row].coordinate
-        let mark = MKPlacemark(coordinate: selectedPlaceMArkCoordinate)// to get accuracy
+        let destinationCoordinates = searchResults[indexPath.row].coordinate
+        let mark = MKPlacemark(coordinate: destinationCoordinates)// to get accuracy
 
         configureActionButton(config: .dismissActionView)
         generatePolyline(toDestination: MKMapItem(placemark: mark))
@@ -424,7 +430,7 @@ extension HomeController: UITableViewDelegate, UITableViewDataSource {
         dismissLocationView(showSearchBar: false) { _ in
             self.locationInputView.removeFromSuperview()
             let annotation = MKPointAnnotation()
-            annotation.coordinate = selectedPlaceMArkCoordinate
+            annotation.coordinate = destinationCoordinates
             self.mapView.addAnnotation(annotation)
             self.mapView.selectAnnotation(annotation, animated: true)
     
@@ -432,7 +438,7 @@ extension HomeController: UITableViewDelegate, UITableViewDataSource {
                 self.setVisibleMapArea(polyline: polyline)
             }
 
-            self.animateRideActionView(shouldShow: true)
+            self.animateRideActionView(shouldShow: true, destination: self.searchResults[indexPath.row])
         }
     }
 }
