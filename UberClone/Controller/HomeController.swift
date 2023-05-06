@@ -331,14 +331,6 @@ extension HomeController {
             mapView.removeOverlay(mapView.overlays[0])
         }
     }
-
-    func setVisibleMapArea(polyline: MKPolyline) {
-    let edgeInsets: UIEdgeInsets = UIEdgeInsets(top: 50.0, left: 50.0, bottom: 50.0, right: 50.0)
-        DispatchQueue.main.async {
-            self.mapView.setVisibleMapRect(polyline.boundingMapRect, edgePadding: edgeInsets,
-                                           animated: true)
-        }
-   }
 }
 
 
@@ -435,10 +427,11 @@ extension HomeController: UITableViewDelegate, UITableViewDataSource {
             self.mapView.selectAnnotation(annotation, animated: true)
     
             if let polyline = self.route?.polyline {
-                self.setVisibleMapArea(polyline: polyline)
+                self.mapView.setVisibleMapArea(polyline: polyline)
             }
 
-            self.animateRideActionView(shouldShow: true, destination: self.searchResults[indexPath.row])
+            self.animateRideActionView(shouldShow: true,
+                                       destination: self.searchResults[indexPath.row])
         }
     }
 }
