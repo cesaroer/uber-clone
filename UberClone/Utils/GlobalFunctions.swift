@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+import MapKit
 
 
 extension UITextField {
@@ -32,5 +32,29 @@ extension UITextField {
         self.endEditing(true)
     }
 }
+
+
+//how to use for middle
+ 
+///    let source = MKMapItem(coordinate: originCoords, name: "Source")
+///    let middle = MKMapItem(coordinate: .init(latitude: 37.78988372529948,
+///                                             longitude: -122.4118223797717), name: "Middle")
+///    let destination = MKMapItem(coordinate: destinationCoordinates, name: "Destination")
+///
+///    MKMapItem.openMaps(
+///      with: [source, middle,destination],
+///      launchOptions: [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving]
+///    )
+func launchRouteOnMaps(from originCoords: CLLocationCoordinate2D,
+                       to destinationCoords: CLLocationCoordinate2D) {
+    let source = MKMapItem(coordinate: originCoords, name: "Source")
+    let destination = MKMapItem(coordinate: destinationCoords, name: "Destination")
+    MKMapItem.openMaps(
+        with: [source,destination],
+        launchOptions: [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving]
+    )
+}
+
+
 
 

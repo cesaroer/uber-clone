@@ -76,7 +76,7 @@ class HomeController: UIViewController {
 
         checkIfUserIsLoggedIn()
         enableLocationServices()
-        //signOut()
+        signOut()
     }
     
     //MARK: - API
@@ -493,15 +493,15 @@ extension HomeController: RideActionviewDelegate {
     func uploadTrip(_ view: RideActionView) {
         guard let pickupCoordinates = locationManager?.location?.coordinate,
               let destinationCoordinates = view.destination?.coordinate else { return }
+
+        //launchRouteOnMaps(from: pickupCoordinates, to: destinationCoordinates)
         Service.shared.uploadTrip(pickupCoordinates: pickupCoordinates,
                                   destinationCoordinates: destinationCoordinates) { error, dbRef in
             if let error = error {
                 print("DEBUG error \(error.localizedDescription)")
             }
-            
+
             print("Uploaded succesfully")
         }
     }
 }
-
-
