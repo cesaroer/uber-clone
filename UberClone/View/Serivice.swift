@@ -56,4 +56,14 @@ struct Service {
 
         REF_TRIPS.child(currentUid).updateChildValues(values, withCompletionBlock: completion)
     }
+
+    func observetrips(completion: @escaping(Trip) -> Void ) {
+        REF_TRIPS.observe(.childAdded) { snapshot in
+            guard let dictionary = snapshot.value as? [String: Any],
+                  !snapshot.key.isEmpty else { return }
+            let passengerUUID = snapshot.key
+            let trip = Trip(passengerUUID:passengerUUID , dictionary: dictionary)
+            completion(trip)
+        }
+    }
 }
