@@ -46,7 +46,10 @@ class HomeController: UIViewController {
 
     private var trip: Trip? {
         didSet {
-            
+            guard let trip = trip else { return }
+            let vc = PickupViewController(trip: trip)
+            vc.modalPresentationStyle = .fullScreen
+            self.present(vc, animated: true)
         }
     }
     
@@ -76,7 +79,7 @@ class HomeController: UIViewController {
 
         checkIfUserIsLoggedIn()
         enableLocationServices()
-        signOut()
+        //signOut()
     }
     
     //MARK: - API
