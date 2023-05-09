@@ -8,9 +8,14 @@
 import UIKit
 import MapKit
 
+protocol PickupControllerDelegate: AnyObject {
+    func didAcceptTrip(_ trip: Trip)
+}
+
 class PickupViewController: UIViewController {
 
     //MARK: - Properties
+    weak var delegate: PickupControllerDelegate?
     private let mapview = MKMapView()
     var trip: Trip
     
@@ -98,7 +103,12 @@ class PickupViewController: UIViewController {
     }
     
     @objc func acceptTrip() {
-        launchRouteOnMaps(from: trip.pickupCoords, to: trip.destinationCoords)
+        Service.shared.acceptTrip(trip: trip) { error, ref in
+            self.delegate?.didAcceptTrip(self.trip)
+            self.dismiss(animated: true) {
+                //launchRouteOnMaps(from: self.trip.pickupCoords, to: self.trip.destinationCoords)
+            }
+        }
     }
 
     //MARK: - API

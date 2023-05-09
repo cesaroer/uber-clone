@@ -46,9 +46,10 @@ class HomeController: UIViewController {
 
     private var trip: Trip? {
         didSet {
-            guard let trip = trip else { return }
+            guard let trip = trip, trip.state == .requested else { return }
             let vc = PickupViewController(trip: trip)
             vc.modalPresentationStyle = .fullScreen
+            vc.delegate = self
             self.present(vc, animated: true)
         }
     }
@@ -80,6 +81,12 @@ class HomeController: UIViewController {
         checkIfUserIsLoggedIn()
         enableLocationServices()
         //signOut()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        guard let trip = trip else { return }
+        
+        
     }
     
     //MARK: - API
@@ -492,6 +499,7 @@ extension HomeController: LocationInputViewDelegate {
     }
 }
 
+// MARK: - RideActionviewDelegate
 extension HomeController: RideActionviewDelegate {
     func uploadTrip(_ view: RideActionView) {
         guard let pickupCoordinates = locationManager?.location?.coordinate,
@@ -506,4 +514,12 @@ extension HomeController: RideActionviewDelegate {
             print("Uploaded succesfully")
         }
     }
+}
+
+// MARK: - PickupControllerDelegate
+extension HomeController: PickupControllerDelegate {
+    func didAcceptTrip(_ trip: Trip) {
+        self.trip?.state = .accepted
+    }
+
 }
