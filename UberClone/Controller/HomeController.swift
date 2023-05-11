@@ -505,13 +505,18 @@ extension HomeController: RideActionviewDelegate {
         guard let pickupCoordinates = locationManager?.location?.coordinate,
               let destinationCoordinates = view.destination?.coordinate else { return }
 
+        self.shouldPresentLoadingView(true, message: "Finding you a ride!")
         Service.shared.uploadTrip(pickupCoordinates: pickupCoordinates,
                                   destinationCoordinates: destinationCoordinates) { error, dbRef in
             if let error = error {
                 print("DEBUG error \(error.localizedDescription)")
             }
-
-            print("Uploaded succesfully")
+            
+            UIView.animate(withDuration: 0.5, delay: 0, options: []) {
+                self.rideActionView.frame.origin.y = self.view.frame.height
+            } completion: { _ in
+                
+            }
         }
     }
 }

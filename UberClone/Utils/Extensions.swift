@@ -223,3 +223,51 @@ extension MKMapItem {
     self.name = name
   }
 }
+
+extension UIViewController {
+    func shouldPresentLoadingView(_ present: Bool, message: String? = nil) {
+        if present {
+            let loadingView = UIView()
+            loadingView.frame = self.view.frame
+            loadingView.backgroundColor = UIColor.black.withAlphaComponent(0.8)
+            loadingView.alpha = 0
+            loadingView.tag = 1
+            
+            let indicator = UIActivityIndicatorView()
+            indicator.style = .large
+            indicator.color = .white
+            indicator.center = loadingView.center
+
+            let label = UILabel()
+            label.text = message
+            label.font = UIFont.boldSystemFont(ofSize: 24)
+            label.textColor = .white
+            label.textAlignment = .center
+            label.alpha = 0.87
+            
+            view.addSubview(loadingView)
+            view.addSubview(indicator)
+            view.addSubview(label)
+
+            label.centerX(inView: view)
+            label.anchor(top: indicator.bottomAnchor, paddingTop: 32)
+
+            indicator.startAnimating()
+
+            UIView.animate(withDuration: 0.3, delay: 0) {
+                loadingView.alpha = 1
+            }
+        } else {
+            view.subviews.forEach { subview in
+                if subview.tag == 1 {
+                    UIView.animate(withDuration: 0.3, delay: 0, options: []) {
+                        subview.alpha = 0
+                    } completion: { _ in
+                        subview.removeFromSuperview()
+                    }
+
+                }
+            }
+        }
+    }
+}
