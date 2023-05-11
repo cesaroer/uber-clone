@@ -38,6 +38,7 @@ class HomeController: UIViewController {
             if user?.accountType == .passgenger {
                 fetchDrivers()
                 configureLocationInputActivationView()
+                observeCurrentTrip()
             }else {
                 observeTrips()
             }
@@ -46,11 +47,16 @@ class HomeController: UIViewController {
 
     private var trip: Trip? {
         didSet {
-            guard let trip = trip, trip.state == .requested else { return }
-            let vc = PickupViewController(trip: trip)
-            vc.modalPresentationStyle = .fullScreen
-            vc.delegate = self
-            self.present(vc, animated: true)
+            guard let user = user else { return }
+            if user.accountType == .driver {
+                guard let trip = trip, trip.state == .requested else { return }
+                let vc = PickupViewController(trip: trip)
+                vc.modalPresentationStyle = .fullScreen
+                vc.delegate = self
+                self.present(vc, animated: true)
+            } else {
+                
+            }
         }
     }
     
@@ -148,6 +154,15 @@ class HomeController: UIViewController {
     func observeTrips() {
         Service.shared.observetrips { trip in
             self.trip = trip
+        }
+    }
+
+    func observeCurrentTrip() {
+        Service.shared.observeCurrentTrip { trip in
+            self.trip = trip
+            if trip.state == .accepted {
+                self.shouldPresentLoadingView(false)
+            }
         }
     }
     

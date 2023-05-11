@@ -72,4 +72,14 @@ struct Service {
         let values = ["driverUUID": currentUUID, "state": TripState.accepted.rawValue] as [String : Any]
         REF_TRIPS.child(trip.passengerUUID).updateChildValues(values, withCompletionBlock: completion)
     }
+
+    func observeCurrentTrip(completion: @escaping(Trip) -> Void) {
+        guard let currentUUID = Auth.auth().currentUser?.uid else { return }
+        REF_TRIPS.child(currentUUID).observe(.value) { snapshot in
+            guard let dict = snapshot.value as? [String: Any] else { return }
+            let passengerUUID = snapshot.key
+            let trip = Trip(passengerUUID:passengerUUID , dictionary: dict)
+            completion(trip)
+        }
+    }
 }
