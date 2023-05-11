@@ -539,6 +539,19 @@ extension HomeController: RideActionviewDelegate {
 // MARK: - PickupControllerDelegate
 extension HomeController: PickupControllerDelegate {
     func didAcceptTrip(_ trip: Trip) {
+        
+        let anno = MKPointAnnotation()
+        anno.coordinate = trip.pickupCoords
+        mapView.addAnnotation(anno)
+        mapView.selectAnnotation(anno, animated: true)
+        
+        let placeMark = MKPlacemark(coordinate: trip.pickupCoords)
+        let mapItem = MKMapItem(placemark: placeMark)
+        generatePolyline(toDestination: mapItem)
+        
+        if let polyline = self.route?.polyline {
+            self.mapView.setVisibleMapArea(polyline: polyline)
+        }
         self.trip?.state = .accepted
     }
 

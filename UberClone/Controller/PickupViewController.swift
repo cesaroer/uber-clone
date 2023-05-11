@@ -106,7 +106,7 @@ class PickupViewController: UIViewController {
         Service.shared.acceptTrip(trip: trip) { error, ref in
             self.delegate?.didAcceptTrip(self.trip)
             self.dismiss(animated: true) {
-                launchRouteOnMaps(from: self.trip.pickupCoords, to: self.trip.destinationCoords)
+                //launchRouteOnMaps(from: self.trip.pickupCoords, to: self.trip.destinationCoords)
             }
         }
     }

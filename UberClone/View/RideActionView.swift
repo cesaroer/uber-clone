@@ -8,6 +8,46 @@
 import UIKit
 import MapKit
 
+enum RideActionViewconfig {
+    case requestRide
+    case tripAccepted
+    case pickupPassenger
+    case tripInProgress
+    case endTrip
+    
+    init() {
+        self = .requestRide
+    }
+}
+
+enum ButtonAction {
+    case requestRide
+    case cancel
+    case getdirections
+    case pickup
+    case dropOff
+
+    var description: String {
+        switch self {
+        case .requestRide:
+            return "Confirm UberX"
+        case .cancel:
+            return "Cancel Ride"
+        case .getdirections:
+            return "Get Directions"
+        case .pickup:
+            return "Pickup Passenger"
+        case .dropOff:
+            return "Drop Off Passenger"
+        }
+    }
+
+    init() {
+        self = .requestRide
+    }
+}
+
+
 protocol RideActionviewDelegate: AnyObject {
     func uploadTrip(_ view: RideActionView)
 }
@@ -22,6 +62,9 @@ class RideActionView: UIView {
             addressLabel.text = destination?.address
         }
     }
+
+    var config = RideActionViewconfig()
+    var buttonAction = ButtonAction()
     
     private let titleLabel: UILabel = {
        let label = UILabel()
@@ -113,8 +156,14 @@ class RideActionView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    //MARK: - Helpers
+    //MARK: - Selectors
     @objc func actionButtonPressed() {
         delegate?.uploadTrip(self)
     }
+
+    //MARK: - Helpers
+    func configureUI(withConfig: RideActionViewconfig) {
+        
+    }
+    
 }
