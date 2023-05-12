@@ -68,18 +68,16 @@ class RideActionView: UIView {
     
     private let titleLabel: UILabel = {
        let label = UILabel()
-        label.textColor = .darkGray
-        label.font = UIFont.boldSystemFont(ofSize: 18)
-        label.text = "Coffe"
+        label.textColor = .black
+        label.font = UIFont.boldSystemFont(ofSize: 20)
         label.textAlignment = .center
         return label
     }()
     
     private let addressLabel: UILabel = {
        let label = UILabel()
-        label.textColor = .lightGray
-        label.font = UIFont.systemFont(ofSize: 16)
-        label.text = "Coffe Street Whasington"
+        label.textColor = .white
+        label.font = UIFont.boldSystemFont(ofSize: 18)
         label.textAlignment = .center
         return label
     }()
@@ -120,7 +118,7 @@ class RideActionView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = .white
+        backgroundColor = .white.withAlphaComponent(0.2)
         addShadow()
         
         let stack = UIStackView(arrangedSubviews: [titleLabel, addressLabel])
@@ -142,7 +140,7 @@ class RideActionView: UIView {
         infoLabel.anchor(top: infoView.bottomAnchor, paddingTop: 8)
 
         let separatorView = UIView()
-        separatorView.backgroundColor = .gray
+        separatorView.backgroundColor = .white.withAlphaComponent(0.85)
         addSubview(separatorView)
         separatorView.anchor(top: infoLabel.bottomAnchor, left: leftAnchor,
                              right: rightAnchor, paddingTop: 8, height: 0.75)
@@ -163,7 +161,22 @@ class RideActionView: UIView {
 
     //MARK: - Helpers
     func configureUI(withConfig: RideActionViewconfig) {
-        
+        switch config {
+        case .requestRide:
+            break
+        case .tripAccepted:
+            titleLabel.text = "On Route To Passenger"
+            buttonAction = .getdirections
+            actionButton.setTitle(buttonAction.description, for: .normal)
+            addressLabel.text = ""
+            break
+        case .pickupPassenger:
+            break
+        case .tripInProgress:
+            break
+        case .endTrip:
+            break
+        }
     }
     
 }

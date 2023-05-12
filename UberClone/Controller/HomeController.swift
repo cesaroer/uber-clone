@@ -51,7 +51,7 @@ class HomeController: UIViewController {
             if user.accountType == .driver {
                 guard let trip = trip, trip.state == .requested else { return }
                 let vc = PickupViewController(trip: trip)
-                vc.modalPresentationStyle = .fullScreen
+                vc.modalPresentationStyle = .custom
                 vc.delegate = self
                 self.present(vc, animated: true)
             } else {
@@ -264,6 +264,13 @@ class HomeController: UIViewController {
         rideActionView.delegate = self
         rideActionView.frame = CGRect(x: 0, y: view.frame.height,
                                       width: view.frame.width, height: rideActionViewHeight)
+        
+        let blurView = UIVisualEffectView()
+        blurView.frame = CGRect(x: 0, y: 0,
+                                width: view.frame.width, height: rideActionViewHeight)
+        blurView.effect = UIBlurEffect(style: .systemThinMaterialDark)
+        blurView.alpha = 0.98
+        rideActionView.insertSubview(blurView, at: 0)
     }
 
     func dismissLocationView(showSearchBar: Bool, completionBlock: ((Bool) -> Void)? = nil) {
@@ -301,16 +308,21 @@ class HomeController: UIViewController {
         }
     }
 
-    func animateRideActionView(shouldShow: Bool, destination: MKPlacemark? = nil) {
+    func animateRideActionView(shouldShow: Bool, destination: MKPlacemark? = nil,
+                               config: RideActionViewconfig? = nil) {
         let yOrigin = shouldShow ? self.rideActionViewHeight : 0
-        
-        if shouldShow {
-            guard let destination = destination else { return }
-            self.rideActionView.destination = destination
-        }
         
         UIView.animate(withDuration: 0.3) {
             self.rideActionView.frame.origin.y = self.view.frame.height - yOrigin
+        }
+
+        if shouldShow {
+            if let config = config {
+                rideActionView.configureUI(withConfig: config)
+            }
+            if let destination = destination {
+                self.rideActionView.destination = destination
+            }
         }
     }
     
@@ -517,6 +529,7 @@ extension HomeController: LocationInputViewDelegate {
 // MARK: - RideActionviewDelegate
 extension HomeController: RideActionviewDelegate {
     func uploadTrip(_ view: RideActionView) {
+        print("DEBUG \(locationManager.debugDescription)")
         guard let pickupCoordinates = locationManager?.location?.coordinate,
               let destinationCoordinates = view.destination?.coordinate else { return }
 
@@ -552,7 +565,12 @@ extension HomeController: PickupControllerDelegate {
         if let polyline = self.route?.polyline {
             self.mapView.setVisibleMapArea(polyline: polyline)
         }
+        
         self.trip?.state = .accepted
+        self.dismiss(animated: true) {
+            self.animateRideActionView(shouldShow: true, config: .tripAccepted)
+            //launchRouteOnMaps(from: self.trip.pickupCoords, to: self.trip.destinationCoords)
+        }
     }
 
 }

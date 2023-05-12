@@ -229,9 +229,14 @@ extension UIViewController {
         if present {
             let loadingView = UIView()
             loadingView.frame = self.view.frame
-            loadingView.backgroundColor = UIColor.black.withAlphaComponent(0.8)
+            loadingView.backgroundColor = UIColor.black.withAlphaComponent(0.1)
             loadingView.alpha = 0
             loadingView.tag = 1
+
+            let blurView = UIVisualEffectView()
+            blurView.frame = self.view.frame
+            blurView.alpha = 0.99
+            blurView.effect = UIBlurEffect(style: .systemMaterialDark)
             
             let indicator = UIActivityIndicatorView()
             indicator.style = .large
@@ -246,6 +251,7 @@ extension UIViewController {
             label.alpha = 0.87
             
             view.addSubview(loadingView)
+            loadingView.addSubview(blurView)
             loadingView.addSubview(indicator)
             loadingView.addSubview(label)
 
@@ -269,5 +275,14 @@ extension UIViewController {
                 }
             }
         }
+    }
+}
+
+extension UIView {
+    func applyBackgroundBlur(style: UIBlurEffect.Style) {
+        let blurView = UIVisualEffectView()
+        blurView.frame = self.frame
+        blurView.effect = UIBlurEffect(style: style)
+        self.addSubview(blurView)
     }
 }

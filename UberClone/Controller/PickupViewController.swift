@@ -66,7 +66,8 @@ class PickupViewController: UIViewController {
 
     //MARK: - helpers
     func configureUI() {
-        view.backgroundColor = .backgroundColor
+        view.applyBackgroundBlur(style: .dark)
+
         view.addSubview(cancelButton)
         cancelButton.anchor(top: view.safeAreaLayoutGuide.topAnchor,
                             left: view.leftAnchor, paddingLeft: 16)
@@ -105,9 +106,6 @@ class PickupViewController: UIViewController {
     @objc func acceptTrip() {
         Service.shared.acceptTrip(trip: trip) { error, ref in
             self.delegate?.didAcceptTrip(self.trip)
-            self.dismiss(animated: true) {
-                //launchRouteOnMaps(from: self.trip.pickupCoords, to: self.trip.destinationCoords)
-            }
         }
     }
 
