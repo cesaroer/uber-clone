@@ -65,6 +65,7 @@ class RideActionView: UIView {
 
     var config = RideActionViewconfig()
     var buttonAction = ButtonAction()
+    var user: User?
     
     private let titleLabel: UILabel = {
        let label = UILabel()
@@ -163,13 +164,24 @@ class RideActionView: UIView {
     func configureUI(withConfig: RideActionViewconfig) {
         switch config {
         case .requestRide:
-            break
-        case .tripAccepted:
-            titleLabel.text = "On Route To Passenger"
-            buttonAction = .getdirections
+            buttonAction = .requestRide
             actionButton.setTitle(buttonAction.description, for: .normal)
-            addressLabel.text = ""
-            break
+            
+        case .tripAccepted:
+    
+            guard let user = self.user else { return }
+            if user.accountType == .passgenger {
+                buttonAction = .getdirections
+                actionButton.setTitle(buttonAction.description, for: .normal)
+                titleLabel.text = "On Route To Passenger"
+                addressLabel.text = "Pickup \(user.fullname)"
+            } else {
+                buttonAction = .cancel
+                actionButton.setTitle(buttonAction.description, for: .normal)
+                titleLabel.text = "Driver On Route"
+                addressLabel.text = "Your driver \(user.fullname)"
+            }
+            
         case .pickupPassenger:
             break
         case .tripInProgress:

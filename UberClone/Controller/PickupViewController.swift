@@ -9,7 +9,7 @@ import UIKit
 import MapKit
 
 protocol PickupControllerDelegate: AnyObject {
-    func didAcceptTrip(_ trip: Trip)
+    func didAcceptTrip(_ trip: Trip, controller: UIViewController)
 }
 
 class PickupViewController: UIViewController {
@@ -105,7 +105,7 @@ class PickupViewController: UIViewController {
     
     @objc func acceptTrip() {
         Service.shared.acceptTrip(trip: trip) { error, ref in
-            self.delegate?.didAcceptTrip(self.trip)
+            self.delegate?.didAcceptTrip(self.trip, controller: self)
         }
     }
 

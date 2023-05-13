@@ -160,8 +160,16 @@ class HomeController: UIViewController {
     func observeCurrentTrip() {
         Service.shared.observeCurrentTrip { trip in
             self.trip = trip
+
             if trip.state == .accepted {
                 self.shouldPresentLoadingView(false)
+                
+                guard let driverUUID = trip.driverUUID else { return }
+                
+                Service.shared.fetchUserData(uid: driverUUID) { driver in
+                    self.animateRideActionView(shouldShow: true ,
+                                               config: .tripAccepted, user: driver)
+                }
             }
         }
     }
@@ -309,7 +317,8 @@ class HomeController: UIViewController {
     }
 
     func animateRideActionView(shouldShow: Bool, destination: MKPlacemark? = nil,
-                               config: RideActionViewconfig? = nil) {
+                               config: RideActionViewconfig? = nil,
+                               user: User? = nil) {
         let yOrigin = shouldShow ? self.rideActionViewHeight : 0
         
         UIView.animate(withDuration: 0.3) {
@@ -317,11 +326,18 @@ class HomeController: UIViewController {
         }
 
         if shouldShow {
-            if let config = config {
-                rideActionView.configureUI(withConfig: config)
+            if let destinati = destination {
+                self.rideActionView.destination = destinati
             }
-            if let destination = destination {
-                self.rideActionView.destination = destination
+
+            if let user = user {
+                self.rideActionView.user = user
+            }
+
+            if let config = config {
+                DispatchQueue.main.async {
+                    self.rideActionView.configureUI(withConfig: config)
+                }
             }
         }
     }
@@ -493,7 +509,8 @@ extension HomeController: UITableViewDelegate, UITableViewDataSource {
             }
 
             self.animateRideActionView(shouldShow: true,
-                                       destination: self.searchResults[indexPath.row])
+                                       destination: self.searchResults[indexPath.row],
+                                       config: .requestRide)
         }
     }
 }
@@ -551,26 +568,28 @@ extension HomeController: RideActionviewDelegate {
 
 // MARK: - PickupControllerDelegate
 extension HomeController: PickupControllerDelegate {
-    func didAcceptTrip(_ trip: Trip) {
-        
+    func didAcceptTrip(_ trip: Trip, controller: UIViewController) {
         let anno = MKPointAnnotation()
         anno.coordinate = trip.pickupCoords
         mapView.addAnnotation(anno)
         mapView.selectAnnotation(anno, animated: true)
-        
         let placeMark = MKPlacemark(coordinate: trip.pickupCoords)
         let mapItem = MKMapItem(placemark: placeMark)
-        generatePolyline(toDestination: mapItem)
         
+        self.trip?.state = .accepted
+        self.generatePolyline(toDestination: mapItem)
+
         if let polyline = self.route?.polyline {
             self.mapView.setVisibleMapArea(polyline: polyline)
         }
-        
-        self.trip?.state = .accepted
-        self.dismiss(animated: true) {
-            self.animateRideActionView(shouldShow: true, config: .tripAccepted)
+
+        controller.dismiss(animated: true) {
+            guard let passengerUUID = trip.passengerUUID else { return }
+            Service.shared.fetchUserData(uid: passengerUUID) { user in
+                self.animateRideActionView(shouldShow: true, destination: placeMark,
+                                           config: .tripAccepted, user: user)
+            }
             //launchRouteOnMaps(from: self.trip.pickupCoords, to: self.trip.destinationCoords)
         }
     }
-
 }

@@ -8,15 +8,239 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "ADCCB343-B9F3-47D1-9DB5-DCD77AED5AA6"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "UberClone/Controller/HomeController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "549"
+            endingLineNumber = "549"
+            landmarkName = "uploadTrip(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E4958D97-4B47-4605-BB26-B95D84E193AF"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "UberClone/Controller/HomeController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "387"
+            endingLineNumber = "387"
+            landmarkName = "generatePolyline(toDestination:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "62A850B3-EF05-4BE9-BC97-EFAA9BEFB105"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "UberClone/Utils/Extensions.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "211"
+            endingLineNumber = "211"
+            landmarkName = "setVisibleMapArea(polyline:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "79A211CE-8BC9-4104-8974-7D85B58C6A09"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "UberClone/Controller/HomeController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "394"
+            endingLineNumber = "394"
+            landmarkName = "generatePolyline(toDestination:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "94BEE17D-3E50-49BE-ADCF-CB4A75F2785D"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "UberClone/Controller/HomeController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "587"
+            endingLineNumber = "587"
+            landmarkName = "didAcceptTrip(_:controller:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "94BEE17D-3E50-49BE-ADCF-CB4A75F2785D - 264649ca6d4b91d9"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in UberClone.HomeController.didAcceptTrip(_: UberClone.Trip, controller: __C.UIViewController) -&gt; ()"
+                  moduleName = "UberClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/cesarvargastapia/Downloads/uber-clone/UberClone/Controller/HomeController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "585"
+                  endingLineNumber = "585"
+                  offsetFromSymbolStart = "40">
+               </Location>
+               <Location
+                  uuid = "94BEE17D-3E50-49BE-ADCF-CB4A75F2785D - 264649ca6d4b91d9"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in UberClone.HomeController.didAcceptTrip(_: UberClone.Trip, controller: __C.UIViewController) -&gt; ()"
+                  moduleName = "UberClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/cesarvargastapia/Downloads/uber-clone/UberClone/Controller/HomeController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "585"
+                  endingLineNumber = "585"
+                  offsetFromSymbolStart = "92">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7F2BCD4D-EE81-4FDC-A42C-D705D6466896"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "UberClone/Controller/HomeController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "532"
-            endingLineNumber = "532"
-            landmarkName = "uploadTrip(_:)"
+            startingLineNumber = "327"
+            endingLineNumber = "327"
+            landmarkName = "animateRideActionView(shouldShow:destination:config:user:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2B7CB41E-AB03-42EC-BC60-50F40FF48905"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "UberClone/Controller/HomeController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "338"
+            endingLineNumber = "338"
+            landmarkName = "animateRideActionView(shouldShow:destination:config:user:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "2B7CB41E-AB03-42EC-BC60-50F40FF48905 - 7e4992c5fa453a5f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "UberClone.HomeController.animateRideActionView(shouldShow: Swift.Bool, destination: Swift.Optional&lt;__C.MKPlacemark&gt;, config: Swift.Optional&lt;UberClone.RideActionViewconfig&gt;, user: Swift.Optional&lt;UberClone.User&gt;) -&gt; ()"
+                  moduleName = "UberClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/cesarvargastapia/Downloads/uber-clone/UberClone/Controller/HomeController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "338"
+                  endingLineNumber = "338"
+                  offsetFromSymbolStart = "1052">
+               </Location>
+               <Location
+                  uuid = "2B7CB41E-AB03-42EC-BC60-50F40FF48905 - f74c0a6d3a3e2d3c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 @Swift.MainActor () -&gt; () in UberClone.HomeController.animateRideActionView(shouldShow: Swift.Bool, destination: Swift.Optional&lt;__C.MKPlacemark&gt;, config: Swift.Optional&lt;UberClone.RideActionViewconfig&gt;, user: Swift.Optional&lt;UberClone.User&gt;) -&gt; ()"
+                  moduleName = "UberClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/cesarvargastapia/Downloads/uber-clone/UberClone/Controller/HomeController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "339"
+                  endingLineNumber = "339"
+                  offsetFromSymbolStart = "44">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5A050A43-F845-49B1-802D-3E7AEE82EC9D"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "UberClone/View/RideActionView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "171"
+            endingLineNumber = "171"
+            landmarkName = "configureUI(withConfig:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "5A050A43-F845-49B1-802D-3E7AEE82EC9D - b376228b7a43c0af"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "UberClone.RideActionView.configureUI(withConfig: UberClone.RideActionViewconfig) -&gt; ()"
+                  moduleName = "UberClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/cesarvargastapia/Downloads/uber-clone/UberClone/View/RideActionView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "172"
+                  endingLineNumber = "172"
+                  offsetFromSymbolStart = "300">
+               </Location>
+               <Location
+                  uuid = "5A050A43-F845-49B1-802D-3E7AEE82EC9D - b376228b7a43c0af"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "UberClone.RideActionView.configureUI(withConfig: UberClone.RideActionViewconfig) -&gt; ()"
+                  moduleName = "UberClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/cesarvargastapia/Downloads/uber-clone/UberClone/View/RideActionView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "172"
+                  endingLineNumber = "172"
+                  offsetFromSymbolStart = "376">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9A253032-C235-4AE8-9B0E-38616FE009E9"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "UberClone/Controller/HomeController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "330"
+            endingLineNumber = "330"
+            landmarkName = "animateRideActionView(shouldShow:destination:config:user:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

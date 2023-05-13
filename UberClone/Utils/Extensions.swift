@@ -212,7 +212,8 @@ extension MKMapView {
                                                 bottom: 310.0, right: 75.0)
         DispatchQueue.main.async {
             self.setVisibleMapRect(polyline.boundingMapRect,
-                                   edgePadding: edgeInsets, animated: true)
+                                   edgePadding: edgeInsets, animated: false)
+            self.layoutIfNeeded()
         }
    }
 }
