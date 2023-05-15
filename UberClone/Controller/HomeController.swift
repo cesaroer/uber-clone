@@ -383,7 +383,8 @@ extension HomeController {
         }
     }
 
-    func generatePolyline(toDestination destination: MKMapItem) {
+    func generatePolyline(toDestination destination: MKMapItem,
+                          setVisibleMapArea: Bool = false) {
         let request = MKDirections.Request()
         request.source = MKMapItem.forCurrentLocation()
         request.destination = destination
@@ -396,6 +397,10 @@ extension HomeController {
 
             guard let polyline = self.route?.polyline else { return }
             self.mapView.addOverlay(polyline)
+            
+            if setVisibleMapArea {
+                self.mapView.setVisibleMapArea(polyline: polyline)
+            }
         }
     }
 
@@ -495,7 +500,7 @@ extension HomeController: UITableViewDelegate, UITableViewDataSource {
         let mark = MKPlacemark(coordinate: destinationCoordinates)// to get accuracy
 
         configureActionButton(config: .dismissActionView)
-        generatePolyline(toDestination: MKMapItem(placemark: mark))
+        generatePolyline(toDestination: MKMapItem(placemark: mark), setVisibleMapArea: true)
 
         dismissLocationView(showSearchBar: false) { _ in
             self.locationInputView.removeFromSuperview()
@@ -504,9 +509,9 @@ extension HomeController: UITableViewDelegate, UITableViewDataSource {
             self.mapView.addAnnotation(annotation)
             self.mapView.selectAnnotation(annotation, animated: true)
     
-            if let polyline = self.route?.polyline {
-                self.mapView.setVisibleMapArea(polyline: polyline)
-            }
+//            if let polyline = self.route?.polyline {
+//                self.mapView.setVisibleMapArea(polyline: polyline)
+//            }
 
             self.animateRideActionView(shouldShow: true,
                                        destination: self.searchResults[indexPath.row],
@@ -577,11 +582,7 @@ extension HomeController: PickupControllerDelegate {
         let mapItem = MKMapItem(placemark: placeMark)
         
         self.trip?.state = .accepted
-        self.generatePolyline(toDestination: mapItem)
-
-        if let polyline = self.route?.polyline {
-            self.mapView.setVisibleMapArea(polyline: polyline)
-        }
+        self.generatePolyline(toDestination: mapItem, setVisibleMapArea: true)
 
         controller.dismiss(animated: true) {
             guard let passengerUUID = trip.passengerUUID else { return }
