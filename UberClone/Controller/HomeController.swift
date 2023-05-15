@@ -550,8 +550,8 @@ extension HomeController: LocationInputViewDelegate {
 
 // MARK: - RideActionviewDelegate
 extension HomeController: RideActionviewDelegate {
+
     func uploadTrip(_ view: RideActionView) {
-        print("DEBUG \(locationManager.debugDescription)")
         guard let pickupCoordinates = locationManager?.location?.coordinate,
               let destinationCoordinates = view.destination?.coordinate else { return }
 
@@ -567,6 +567,17 @@ extension HomeController: RideActionviewDelegate {
             } completion: { _ in
                 
             }
+        }
+    }
+
+    func cancelTrip() {
+        Service.shared.cancelTrip { error, ref in
+            if let error = error {
+                print("DEBUG error deliting trip \(error.localizedDescription)")
+                return
+            }
+
+            self.animateRideActionView(shouldShow: false)
         }
     }
 }

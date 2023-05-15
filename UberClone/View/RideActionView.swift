@@ -50,6 +50,7 @@ enum ButtonAction {
 
 protocol RideActionviewDelegate: AnyObject {
     func uploadTrip(_ view: RideActionView)
+    func cancelTrip()
 }
 
 class RideActionView: UIView {
@@ -165,7 +166,7 @@ class RideActionView: UIView {
         case .requestRide:
             delegate?.uploadTrip(self)
         case .cancel:
-            print("DEBUG Hanlde Cancel")
+            delegate?.cancelTrip()
         case .getdirections:
             print("DEBUG Hanlde getdirections")
         case .pickup:

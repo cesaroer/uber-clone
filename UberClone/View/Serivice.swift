@@ -82,4 +82,9 @@ struct Service {
             completion(trip)
         }
     }
+
+    func cancelTrip(completion: @escaping(Error?, DatabaseReference) -> Void) {
+        guard let currentUUID = Auth.auth().currentUser?.uid else { return }
+        REF_TRIPS.child(currentUUID).removeValue(completionBlock: completion)
+    }
 }
