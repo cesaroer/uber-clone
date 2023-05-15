@@ -161,27 +161,27 @@ class RideActionView: UIView {
     }
 
     //MARK: - Helpers
-    func configureUI(withConfig: RideActionViewconfig) {
-        switch config {
+    func configureUI(with config: RideActionViewconfig) {
+        self.config = config
+        switch self.config {
         case .requestRide:
             buttonAction = .requestRide
             actionButton.setTitle(buttonAction.description, for: .normal)
-            
         case .tripAccepted:
-    
             guard let user = self.user else { return }
-            if user.accountType == .passgenger {
-                buttonAction = .getdirections
-                actionButton.setTitle(buttonAction.description, for: .normal)
-                titleLabel.text = "On Route To Passenger"
-                addressLabel.text = "Pickup \(user.fullname)"
-            } else {
-                buttonAction = .cancel
-                actionButton.setTitle(buttonAction.description, for: .normal)
-                titleLabel.text = "Driver On Route"
-                addressLabel.text = "Your driver \(user.fullname)"
+            DispatchQueue.main.async {
+                if user.accountType == .passgenger {
+                    self.buttonAction = .getdirections
+                    self.actionButton.setTitle(self.buttonAction.description, for: .normal)
+                    self.titleLabel.text = "On Route To Passenger"
+                    self.addressLabel.text = "Pickup \(user.fullname)"
+                } else {
+                    self.buttonAction = .cancel
+                    self.actionButton.setTitle(self.buttonAction.description, for: .normal)
+                    self.titleLabel.text = "Driver On Route"
+                    self.addressLabel.text = "Your driver \(user.fullname)"
+                }
             }
-            
         case .pickupPassenger:
             break
         case .tripInProgress:

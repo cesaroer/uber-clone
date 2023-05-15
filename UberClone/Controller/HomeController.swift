@@ -336,7 +336,7 @@ class HomeController: UIViewController {
 
             if let config = config {
                 DispatchQueue.main.async {
-                    self.rideActionView.configureUI(withConfig: config)
+                    self.rideActionView.configureUI(with: config)
                 }
             }
         }
