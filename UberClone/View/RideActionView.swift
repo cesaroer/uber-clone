@@ -86,15 +86,19 @@ class RideActionView: UIView {
     private lazy var infoView: UIView = {
         let view = UIView()
         view.backgroundColor = .black
+        
+        view.addSubview(infoViewLabel)
+        infoViewLabel.centerX(inView: view)
+        infoViewLabel.centerY(inView: view)
+        return view
+    }()
+
+    private let infoViewLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 30)
         label.textColor = .white
         label.text = "X"
-        
-        view.addSubview(label)
-        label.centerX(inView: view)
-        label.centerY(inView: view)
-        return view
+        return label
     }()
 
     private let infoLabel: UILabel = {
@@ -157,7 +161,18 @@ class RideActionView: UIView {
     }
     //MARK: - Selectors
     @objc func actionButtonPressed() {
-        delegate?.uploadTrip(self)
+        switch buttonAction {
+        case .requestRide:
+            delegate?.uploadTrip(self)
+        case .cancel:
+            print("DEBUG Hanlde Cancel")
+        case .getdirections:
+            print("DEBUG Hanlde getdirections")
+        case .pickup:
+            print("DEBUG Hanlde pickup")
+        case .dropOff:
+            print("DEBUG Hanlde dropOff")
+        }
     }
 
     //MARK: - Helpers
@@ -174,21 +189,42 @@ class RideActionView: UIView {
                     self.buttonAction = .getdirections
                     self.actionButton.setTitle(self.buttonAction.description, for: .normal)
                     self.titleLabel.text = "On Route To Passenger"
-                    self.addressLabel.text = "Pickup \(user.fullname)"
+                    self.addressLabel.text = "Pickup"
                 } else {
                     self.buttonAction = .cancel
                     self.actionButton.setTitle(self.buttonAction.description, for: .normal)
                     self.titleLabel.text = "Driver On Route"
-                    self.addressLabel.text = "Your driver \(user.fullname)"
+                    self.addressLabel.text = "Your driver"
                 }
+                
+                self.infoViewLabel.text = String(user.fullname.first ?? "X")
+                self.infoLabel.text = user.fullname
             }
         case .pickupPassenger:
-            break
+            titleLabel.text = "Arrived At Passenger Location"
+            buttonAction = .pickup
+            actionButton.setTitle(buttonAction.description, for: .normal)
         case .tripInProgress:
-            break
+            guard let user = self.user else { return }
+            titleLabel.text = "On Route Destination"
+            if user.accountType == .driver {
+                actionButton.setTitle("Trip In Progress", for: .normal)
+                actionButton.isEnabled = false
+            } else {
+                buttonAction = .getdirections
+                actionButton.setTitle(buttonAction.description, for: .normal)
+            }
         case .endTrip:
-            break
+            guard let user = self.user else { return }
+            if user.accountType == .driver {
+                actionButton.setTitle("Arrived at Destination", for: .normal)
+                actionButton.isEnabled = false
+            } else {
+                buttonAction = .dropOff
+                actionButton.setTitle(buttonAction.description, for: .normal)
+            }
         }
+        
     }
     
 }
