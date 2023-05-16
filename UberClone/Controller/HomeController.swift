@@ -414,6 +414,13 @@ extension HomeController {
             mapView.removeOverlay(mapView.overlays[0])
         }
     }
+
+    func centerMapOnUserLocation() {
+        guard let coordinate = locationManager?.location?.coordinate else { return }
+        let region = MKCoordinateRegion(center: coordinate,
+                                        latitudinalMeters: 2000, longitudinalMeters: 2000)
+        self.mapView.setRegion(region, animated: true)
+    }
 }
 
 
@@ -508,10 +515,6 @@ extension HomeController: UITableViewDelegate, UITableViewDataSource {
             annotation.coordinate = destinationCoordinates
             self.mapView.addAnnotation(annotation)
             self.mapView.selectAnnotation(annotation, animated: true)
-    
-//            if let polyline = self.route?.polyline {
-//                self.mapView.setVisibleMapArea(polyline: polyline)
-//            }
 
             self.animateRideActionView(shouldShow: true,
                                        destination: self.searchResults[indexPath.row],
@@ -578,6 +581,12 @@ extension HomeController: RideActionviewDelegate {
             }
 
             self.animateRideActionView(shouldShow: false)
+            self.removeAnnotationsAndOverlays()
+//            let image = #imageLiteral(resourceName: "baseline_menu_black_36dp")
+//            self.actionButton.setImage(image, for: .normal)
+//            self.actionButtonState = .showMenu
+            self.configureActionButton(config: .showMenu)
+            self.centerMapOnUserLocation()
         }
     }
 }
@@ -598,6 +607,9 @@ extension HomeController: PickupControllerDelegate {
         Service.shared.observeTripCancelled(trip: trip) {
             self.removeAnnotationsAndOverlays()
             self.animateRideActionView(shouldShow: false)
+            self.centerMapOnUserLocation()
+            self.presentAlertController(title: "Ups!",
+                                        withMessage: "The passenger has cancelled this trip")
         }
 
         controller.dismiss(animated: true) {
