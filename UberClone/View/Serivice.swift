@@ -93,4 +93,10 @@ struct Service {
         guard let currentUUID = Auth.auth().currentUser?.uid else { return }
         REF_TRIPS.child(currentUUID).removeValue(completionBlock: completion)
     }
+
+    func updateDriverLocation(location: CLLocation) {
+        guard let currentUUID = Auth.auth().currentUser?.uid else { return }
+        let geofire = GeoFire(firebaseRef: REF_DRIVER_LOCATIOS)
+        geofire.setLocation(location, forKey: currentUUID)
+    }
 }
