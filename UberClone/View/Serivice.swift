@@ -67,6 +67,12 @@ struct Service {
         }
     }
 
+    func observeTripCancelled(trip: Trip, completion: @escaping() -> Void) {
+        REF_TRIPS.child(trip.passengerUUID).observeSingleEvent(of: .childRemoved) { _ in
+            completion()
+        }
+    }
+
     func acceptTrip(trip: Trip, completion: @escaping(Error?, DatabaseReference) -> Void) {
         guard let currentUUID = Auth.auth().currentUser?.uid else { return }
         let values = ["driverUUID": currentUUID, "state": TripState.accepted.rawValue] as [String : Any]

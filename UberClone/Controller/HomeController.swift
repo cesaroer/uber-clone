@@ -593,7 +593,12 @@ extension HomeController: PickupControllerDelegate {
         let mapItem = MKMapItem(placemark: placeMark)
         
         self.trip?.state = .accepted
-        self.generatePolyline(toDestination: mapItem, setVisibleMapArea: true)
+        generatePolyline(toDestination: mapItem, setVisibleMapArea: true)
+        
+        Service.shared.observeTripCancelled(trip: trip) {
+            self.removeAnnotationsAndOverlays()
+            self.animateRideActionView(shouldShow: false)
+        }
 
         controller.dismiss(animated: true) {
             guard let passengerUUID = trip.passengerUUID else { return }
