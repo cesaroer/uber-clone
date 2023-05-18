@@ -18,6 +18,11 @@ enum ActionButtonStates {
     }
 }
 
+enum AnnotationType: String {
+    case pickup
+    case destination
+}
+
 class HomeController: UIViewController {
     
     //MARK: - Properties
@@ -128,7 +133,8 @@ class HomeController: UIViewController {
 
             let placeMark = MKPlacemark(coordinate: trip.destinationCoords)
             let mapItem = MKMapItem(placemark: placeMark)
-            self.generatePolyline(toDestination: mapItem)
+            self.setCustomRegion(with: .destination, withCorrdinates: trip.destinationCoords)
+            self.generatePolyline(toDestination: mapItem, setVisibleMapArea: true)
         }
     }
     
@@ -165,12 +171,14 @@ class HomeController: UIViewController {
         }
     }
 
+    ///Observe for Drivers
     func observeTrips() {
         Service.shared.observetrips { trip in
             self.trip = trip
         }
     }
 
+    /// Observe for user
     func observeCurrentTrip() {
         Service.shared.observeCurrentTrip { trip in
             self.trip = trip
@@ -191,7 +199,7 @@ class HomeController: UIViewController {
             case .driverArrived:
                 self.rideActionView.config = .driverArrived
             case .inProgress:
-                break
+                self.rideActionView.config = .tripInProgress
             case .completed:
                 break
             }
@@ -444,9 +452,12 @@ extension HomeController {
         self.mapView.setRegion(region, animated: true)
     }
 
-    func setCustomRegion(withCorrdinates coordinates: CLLocationCoordinate2D) {
-        let region = CLCircularRegion(center: coordinates, radius: 100, identifier: "Pickup")
-        locationManager?.startMonitoring(for: region)        
+    func setCustomRegion(with type: AnnotationType, withCorrdinates coordinates: CLLocationCoordinate2D) {
+        let region = CLCircularRegion(center: coordinates, radius: 100, identifier: type.rawValue)
+        locationManager?.monitoredRegions.forEach({ oldRegion in
+            locationManager?.stopMonitoring(for: oldRegion)
+        })
+        locationManager?.startMonitoring(for: region)
     }
 
     func zoomForActiveTrip(with driverUUID: String ) {
@@ -525,7 +536,13 @@ extension HomeController: CLLocationManagerDelegate {
     }
 
     func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion) {
-        print("DEBUG: didStartMonitoringFor \(region)")
+        if region.identifier == AnnotationType.pickup.rawValue {
+            print("DEBUG: didStartMonitoringFor pickup \(region)")
+        }
+        
+        if region.identifier == AnnotationType.destination.rawValue {
+            print("DEBUG: didStartMonitoringFor destination \(region)")
+        }
     }
 
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
@@ -658,7 +675,7 @@ extension HomeController: PickupControllerDelegate {
     func didAcceptTrip(_ trip: Trip, controller: UIViewController) {
         self.trip = trip
         self.mapView.addAnnotationAndSelect(forCoordinates: trip.pickupCoords)
-        setCustomRegion(withCorrdinates: trip.pickupCoords)
+        self.setCustomRegion(with: .pickup, withCorrdinates: trip.pickupCoords)
         
         let placeMark = MKPlacemark(coordinate: trip.pickupCoords)
         let mapItem = MKMapItem(placemark: placeMark)
