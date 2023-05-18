@@ -200,22 +200,29 @@ extension MKMapView {
                                       width: 0.01, height: 0.01)
             zoomrect = zoomrect.union(pointRect)
         }
-
+        
         let insets = UIEdgeInsets(top: 100, left: 100, bottom: 310.0, right: 100)
         DispatchQueue.main.async {
             self.setVisibleMapRect(zoomrect, edgePadding: insets, animated: true)
         }
     }
-
+    
     func setVisibleMapArea(polyline: MKPolyline) {
-    let edgeInsets: UIEdgeInsets = UIEdgeInsets(top: 75.0, left: 75.0,
-                                                bottom: 310.0, right: 75.0)
+        let edgeInsets: UIEdgeInsets = UIEdgeInsets(top: 75.0, left: 75.0,
+                                                    bottom: 310.0, right: 75.0)
         DispatchQueue.main.async {
             self.setVisibleMapRect(polyline.boundingMapRect,
                                    edgePadding: edgeInsets, animated: false)
             self.layoutIfNeeded()
         }
-   }
+    }
+
+    func addAnnotationAndSelect(forCoordinates coords: CLLocationCoordinate2D) {
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = coords
+        self.addAnnotation(annotation)
+        self.selectAnnotation(annotation, animated: true)
+    }
 }
 
 extension MKMapItem {

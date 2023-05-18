@@ -119,6 +119,19 @@ class HomeController: UIViewController {
         }
     }
     
+    func startTrip() {
+        guard let trip = self.trip else { return }
+        Service.shared.updateTripState(trip: trip, state: .inProgress) { error, ref in
+            self.rideActionView.config = .tripInProgress
+            self.removeAnnotationsAndOverlays()
+            self.mapView.addAnnotationAndSelect(forCoordinates: trip.destinationCoords)
+
+            let placeMark = MKPlacemark(coordinate: trip.destinationCoords)
+            let mapItem = MKMapItem(placemark: placeMark)
+            self.generatePolyline(toDestination: mapItem)
+        }
+    }
+    
     func fetchUserData() {
         Service.shared.fetchUserData { user in
             self.user = user
@@ -516,12 +529,11 @@ extension HomeController: CLLocationManagerDelegate {
     }
 
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        print("DEBUG: driver did enter passenger region \(region)")
-        
-        self.rideActionView.config = .pickupPassenger
         guard let trip =  self.trip else { return }
         self.trip?.state = .driverArrived
-        Service.shared.updateTripState(trip: trip, state: .driverArrived)
+        Service.shared.updateTripState(trip: trip, state: .driverArrived) { error, ref in
+            self.rideActionView.config = .pickupPassenger
+        }
     }
 
 }
@@ -559,11 +571,8 @@ extension HomeController: UITableViewDelegate, UITableViewDataSource {
 
         dismissLocationView(showSearchBar: false) { _ in
             self.locationInputView.removeFromSuperview()
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = destinationCoordinates
-            self.mapView.addAnnotation(annotation)
-            self.mapView.selectAnnotation(annotation, animated: true)
-
+            //FIXME: - here just and fixme mark example
+            self.mapView.addAnnotationAndSelect(forCoordinates: destinationCoordinates)
             self.animateRideActionView(shouldShow: true,
                                        destination: self.searchResults[indexPath.row],
                                        config: .requestRide)
@@ -601,6 +610,10 @@ extension HomeController: LocationInputViewDelegate {
 
 // MARK: - RideActionviewDelegate
 extension HomeController: RideActionviewDelegate {
+    func pickupPassenger() {
+        startTrip()
+    }
+    
 
     func uploadTrip(_ view: RideActionView) {
         guard let pickupCoordinates = locationManager?.location?.coordinate,
@@ -644,10 +657,7 @@ extension HomeController: RideActionviewDelegate {
 extension HomeController: PickupControllerDelegate {
     func didAcceptTrip(_ trip: Trip, controller: UIViewController) {
         self.trip = trip
-        let anno = MKPointAnnotation()
-        anno.coordinate = trip.pickupCoords
-        mapView.addAnnotation(anno)
-        mapView.selectAnnotation(anno, animated: true)
+        self.mapView.addAnnotationAndSelect(forCoordinates: trip.pickupCoords)
         setCustomRegion(withCorrdinates: trip.pickupCoords)
         
         let placeMark = MKPlacemark(coordinate: trip.pickupCoords)
