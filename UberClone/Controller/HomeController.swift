@@ -421,6 +421,12 @@ extension HomeController {
                                         latitudinalMeters: 2000, longitudinalMeters: 2000)
         self.mapView.setRegion(region, animated: true)
     }
+
+    func setCustomRegion(withCorrdinates coordinates: CLLocationCoordinate2D) {
+        let region = CLCircularRegion(center: coordinates, radius: 100, identifier: "Pickup")
+        locationManager?.startMonitoring(for: region)        
+    }
+
 }
 
 
@@ -457,11 +463,10 @@ extension HomeController: MKMapViewDelegate {
     }
 }
 
-//MARK: - LocationServices
-extension HomeController {
-    
+//MARK: - CLLocationManagerDelegate
+extension HomeController: CLLocationManagerDelegate {
     func enableLocationServices() {
-        
+        locationManager?.delegate = self
         switch locationManager?.authorizationStatus {
         case .notDetermined:
             print("DEBUG: notDetermined")
@@ -481,7 +486,14 @@ extension HomeController {
             break
         }
     }
-    
+
+    func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion) {
+        print("DEBUG: didStartMonitoringFor \(region)")
+    }
+
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        print("DEBUG: driver did enter passenger region \(region)")
+    }
 
 }
 
@@ -594,6 +606,7 @@ extension HomeController: RideActionviewDelegate {
 //            self.actionButtonState = .showMenu
             self.configureActionButton(config: .showMenu)
             self.centerMapOnUserLocation()
+            self.locationInputActivationView.alpha = 1
         }
     }
 }
@@ -605,6 +618,8 @@ extension HomeController: PickupControllerDelegate {
         anno.coordinate = trip.pickupCoords
         mapView.addAnnotation(anno)
         mapView.selectAnnotation(anno, animated: true)
+        setCustomRegion(withCorrdinates: trip.pickupCoords)
+        
         let placeMark = MKPlacemark(coordinate: trip.pickupCoords)
         let mapItem = MKMapItem(placemark: placeMark)
         
