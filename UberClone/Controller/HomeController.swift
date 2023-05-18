@@ -139,6 +139,7 @@ class HomeController: UIViewController {
                           else { return false }
                     if driverAnnotation.uid == driver.uid {
                         driverAnnotation.updateAnnotationPosition(withCoordinate: coordinate)
+                        self.zoomForActiveTrip(with: driverAnnotation.uid)
                         return true
                     }
                     return false
@@ -168,6 +169,8 @@ class HomeController: UIViewController {
                 break
             case .accepted:
                 self.shouldPresentLoadingView(false)
+                self.removeAnnotationsAndOverlays()
+                self.zoomForActiveTrip(with: driverUUID)
                 Service.shared.fetchUserData(uid: driverUUID) { driver in
                     self.animateRideActionView(shouldShow: true ,
                                                config: .tripAccepted, user: driver)
@@ -431,6 +434,21 @@ extension HomeController {
     func setCustomRegion(withCorrdinates coordinates: CLLocationCoordinate2D) {
         let region = CLCircularRegion(center: coordinates, radius: 100, identifier: "Pickup")
         locationManager?.startMonitoring(for: region)        
+    }
+
+    func zoomForActiveTrip(with driverUUID: String ) {
+        var annotations = [MKAnnotation]()
+        self.mapView.annotations.forEach { annotation in
+            if let driverAnnotation = annotation as? DriverAnnotation,
+                driverAnnotation.uid == driverUUID {
+                annotations.append(driverAnnotation)
+            }
+
+            if let userAnnotation = annotation as? MKUserLocation {
+                annotations.append(userAnnotation)
+            }
+        }
+        self.mapView.zoomToFir(annotations: annotations)
     }
 
 }
