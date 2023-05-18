@@ -64,7 +64,11 @@ class RideActionView: UIView {
         }
     }
 
-    var config = RideActionViewconfig()
+    var config = RideActionViewconfig() {
+        didSet {
+            configureUI(with: self.config)
+        }
+    }
     var buttonAction = ButtonAction()
     var user: User?
     
@@ -177,8 +181,7 @@ class RideActionView: UIView {
     }
 
     //MARK: - Helpers
-    func configureUI(with config: RideActionViewconfig) {
-        self.config = config
+    private func configureUI(with config: RideActionViewconfig) {
         switch self.config {
         case .requestRide:
             buttonAction = .requestRide

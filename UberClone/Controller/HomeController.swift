@@ -335,9 +335,7 @@ class HomeController: UIViewController {
             }
 
             if let config = config {
-                DispatchQueue.main.async {
-                    self.rideActionView.configureUI(with: config)
-                }
+                self.rideActionView.config = config
             }
         }
     }
@@ -493,6 +491,8 @@ extension HomeController: CLLocationManagerDelegate {
 
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         print("DEBUG: driver did enter passenger region \(region)")
+        
+        self.rideActionView.config = .pickupPassenger
     }
 
 }
