@@ -99,4 +99,8 @@ struct Service {
         let geofire = GeoFire(firebaseRef: REF_DRIVER_LOCATIOS)
         geofire.setLocation(location, forKey: currentUUID)
     }
+
+    func updateTripState(trip: Trip, state: TripState) {
+        REF_TRIPS.child(trip.passengerUUID).child("state").setValue(state.rawValue)
+    }
 }

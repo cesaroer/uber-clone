@@ -11,6 +11,7 @@ import MapKit
 enum RideActionViewconfig {
     case requestRide
     case tripAccepted
+    case driverArrived
     case pickupPassenger
     case tripInProgress
     case endTrip
@@ -204,6 +205,11 @@ class RideActionView: UIView {
                 self.infoViewLabel.text = String(user.fullname.first ?? "X")
                 self.infoLabel.text = user.fullname
             }
+        case .driverArrived:
+            guard let user = self.user, user.accountType == .driver else { return }
+            titleLabel.text = "Driver has arrived"
+            addressLabel.text = "Please meet driver at pickup location"
+            
         case .pickupPassenger:
             titleLabel.text = "Arrived At Passenger Location"
             buttonAction = .pickup
@@ -227,6 +233,7 @@ class RideActionView: UIView {
                 buttonAction = .dropOff
                 actionButton.setTitle(buttonAction.description, for: .normal)
             }
+            
         }
         
     }
