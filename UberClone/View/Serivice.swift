@@ -53,8 +53,11 @@ struct Service {
         let values = ["pickupCoordinates": pickupArray,
                       "destinationCoordinates": destinationArra,
                       "state": TripState.requested.rawValue] as [String : Any]
+        
+        print("DEBUG values \(values)")
 
-        REF_TRIPS.child(currentUid).updateChildValues(values, withCompletionBlock: completion)
+        //REF_TRIPS.child(currentUid).updateChildValues(values, withCompletionBlock: completion)
+        REF_TRIPS.child(currentUid).setValue(values, withCompletionBlock: completion)
     }
 
     func observetrips(completion: @escaping(Trip) -> Void ) {
