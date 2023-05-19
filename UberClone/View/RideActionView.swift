@@ -53,6 +53,7 @@ protocol RideActionviewDelegate: AnyObject {
     func uploadTrip(_ view: RideActionView)
     func cancelTrip()
     func pickupPassenger()
+    func dropOffPassenger()
 }
 
 class RideActionView: UIView {
@@ -178,7 +179,7 @@ class RideActionView: UIView {
         case .pickup:
             delegate?.pickupPassenger()
         case .dropOff:
-            print("DEBUG Hanlde dropOff")
+            delegate?.dropOffPassenger()
         }
     }
 
@@ -227,6 +228,8 @@ class RideActionView: UIView {
             }
         case .endTrip:
             guard let user = self.user else { return }
+            titleLabel.text = "Arrived at Destination"
+
             if user.accountType == .driver {
                 actionButton.setTitle("Arrived at Destination", for: .normal)
                 actionButton.isEnabled = false

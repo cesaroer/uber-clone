@@ -200,8 +200,14 @@ class HomeController: UIViewController {
                 self.rideActionView.config = .driverArrived
             case .inProgress:
                 self.rideActionView.config = .tripInProgress
+            case .arrivedAtDestination:
+                self.rideActionView.config = .endTrip
             case .completed:
-                break
+                self.animateRideActionView(shouldShow: false)
+                self.centerMapOnUserLocation()
+                self.configureActionButton(config: .showMenu)
+                self.presentAlertController(title: "Trip Compleated", withMessage: "Rate the driver later")
+                self.locationInputActivationView.alpha = 0
             }
         }
     }
@@ -547,10 +553,23 @@ extension HomeController: CLLocationManagerDelegate {
 
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         guard let trip =  self.trip else { return }
-        self.trip?.state = .driverArrived
-        Service.shared.updateTripState(trip: trip, state: .driverArrived) { error, ref in
-            self.rideActionView.config = .pickupPassenger
+        
+        if region.identifier == AnnotationType.pickup.rawValue {
+            self.trip?.state = .driverArrived
+            Service.shared.updateTripState(trip: trip, state: .driverArrived) { error, ref in
+                self.rideActionView.config = .pickupPassenger
+            }
         }
+        
+        if region.identifier == AnnotationType.destination.rawValue {
+            print("DEBUG: didStartMonitoringFor destination \(region)")
+            
+            self.trip?.state = .arrivedAtDestination
+            Service.shared.updateTripState(trip: trip, state: .arrivedAtDestination) { error, ref in
+                self.rideActionView.config = .endTrip
+            }
+        }
+
     }
 
 }
@@ -627,10 +646,6 @@ extension HomeController: LocationInputViewDelegate {
 
 // MARK: - RideActionviewDelegate
 extension HomeController: RideActionviewDelegate {
-    func pickupPassenger() {
-        startTrip()
-    }
-    
 
     func uploadTrip(_ view: RideActionView) {
         guard let pickupCoordinates = locationManager?.location?.coordinate,
@@ -666,6 +681,26 @@ extension HomeController: RideActionviewDelegate {
             self.configureActionButton(config: .showMenu)
             self.centerMapOnUserLocation()
             self.locationInputActivationView.alpha = 1
+        }
+    }
+    
+    func pickupPassenger() {
+        startTrip()
+    }
+
+    func dropOffPassenger() {
+        guard let trip = self.trip else { return }
+        self.trip?.state = .completed
+        Service.shared.updateTripState(trip: trip, state: .completed) { erro, ref in
+            if let error = erro {
+                print("DEBUG error completing trip \(error.localizedDescription)")
+                return
+            }
+
+            self.removeAnnotationsAndOverlays()
+            self.centerMapOnUserLocation()
+            self.animateRideActionView(shouldShow: false)
+
         }
     }
 }
