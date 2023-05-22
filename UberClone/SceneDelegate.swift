@@ -18,7 +18,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         //Making LoginController the root view controller
         guard let scene = (scene as? UIWindowScene)  else { return }
         window = UIWindow(windowScene: scene)
-        window?.rootViewController = HomeController()
+        window?.rootViewController = ContainerController()
         window?.makeKeyAndVisible()
         
         NotificationCenter.default.addObserver(self, selector:#selector(done(notification:)),name:HomeController.NotificationDone,object: nil)

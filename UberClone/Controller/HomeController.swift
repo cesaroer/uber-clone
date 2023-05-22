@@ -23,9 +23,14 @@ enum AnnotationType: String {
     case destination
 }
 
+protocol HomeControllerDelegate: AnyObject {
+    func handleMenuToggle()
+}
+
 class HomeController: UIViewController {
     
     //MARK: - Properties
+    weak var delegate: HomeControllerDelegate?
     private let mapView = MKMapView()
     private var route: MKRoute?
     private let locationManager = LocationHandler.shared.locationManager
@@ -402,6 +407,7 @@ class HomeController: UIViewController {
         case .showMenu:
             let image = #imageLiteral(resourceName: "baseline_menu_black_36dp")
             actionButton.setImage(image, for: .normal)
+            delegate?.handleMenuToggle()
         case .dismissActionView:
             removeAnnotationsAndOverlays()
             mapView.showAnnotations(mapView.annotations, animated: true)

@@ -26,6 +26,8 @@
 		A20D864A29F78366008F52F2 /* DriverAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20D864929F78366008F52F2 /* DriverAnnotation.swift */; };
 		A217BEEE2A06000500BE4431 /* RideActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A217BEED2A06000500BE4431 /* RideActionView.swift */; };
 		A217BEF02A061BA000BE4431 /* Trip.swift in Sources */ = {isa = PBXBuildFile; fileRef = A217BEEF2A061BA000BE4431 /* Trip.swift */; };
+		A224D22E2A1C334A0074977A /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A224D22D2A1C334A0074977A /* MenuController.swift */; };
+		A224D2302A1C33590074977A /* ContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A224D22F2A1C33590074977A /* ContainerController.swift */; };
 		A27A984629EE4EF300E39D93 /* LocationInputActivationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27A984529EE4EF300E39D93 /* LocationInputActivationView.swift */; };
 		A2A6EBB729F3ADF7001C7ED1 /* LocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A6EBB629F3ADF7001C7ED1 /* LocationCell.swift */; };
 		A2F014812A0A021C00EFCA96 /* PickupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F014802A0A021C00EFCA96 /* PickupViewController.swift */; };
@@ -55,6 +57,8 @@
 		A20D864929F78366008F52F2 /* DriverAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DriverAnnotation.swift; path = UberClone/Utils/DriverAnnotation.swift; sourceTree = SOURCE_ROOT; };
 		A217BEED2A06000500BE4431 /* RideActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideActionView.swift; sourceTree = "<group>"; };
 		A217BEEF2A061BA000BE4431 /* Trip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Trip.swift; path = UberClone/View/Trip.swift; sourceTree = SOURCE_ROOT; };
+		A224D22D2A1C334A0074977A /* MenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
+		A224D22F2A1C33590074977A /* ContainerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerController.swift; sourceTree = "<group>"; };
 		A27A984529EE4EF300E39D93 /* LocationInputActivationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInputActivationView.swift; sourceTree = "<group>"; };
 		A2A6EBB629F3ADF7001C7ED1 /* LocationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationCell.swift; sourceTree = "<group>"; };
 		A2F014802A0A021C00EFCA96 /* PickupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickupViewController.swift; sourceTree = "<group>"; };
@@ -141,8 +145,8 @@
 		371A2F5526E9C5E1009C16A0 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				371A2F5826E9C6DC009C16A0 /* LoginController.swift */,
-				3766C3A226EDC2E10044DE48 /* SignUpController.swift */,
+				A224D22C2A1C331B0074977A /* SideMenu */,
+				A224D22B2A1C33080074977A /* Authentication */,
 				37124B8126FD939D00210341 /* HomeController.swift */,
 				A2F014802A0A021C00EFCA96 /* PickupViewController.swift */,
 			);
@@ -169,6 +173,24 @@
 				A217BEEF2A061BA000BE4431 /* Trip.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		A224D22B2A1C33080074977A /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				371A2F5826E9C6DC009C16A0 /* LoginController.swift */,
+				3766C3A226EDC2E10044DE48 /* SignUpController.swift */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
+		A224D22C2A1C331B0074977A /* SideMenu */ = {
+			isa = PBXGroup;
+			children = (
+				A224D22D2A1C334A0074977A /* MenuController.swift */,
+				A224D22F2A1C33590074977A /* ContainerController.swift */,
+			);
+			path = SideMenu;
 			sourceTree = "<group>";
 		};
 		D9CBAD927945F5E0B9B46DB3 /* Frameworks */ = {
@@ -298,12 +320,14 @@
 				A2A6EBB729F3ADF7001C7ED1 /* LocationCell.swift in Sources */,
 				3766C3A326EDC2E10044DE48 /* SignUpController.swift in Sources */,
 				375AE70526EEDCA50039AE45 /* AuthButton.swift in Sources */,
+				A224D22E2A1C334A0074977A /* MenuController.swift in Sources */,
 				A20D864A29F78366008F52F2 /* DriverAnnotation.swift in Sources */,
 				A20D864429F477FC008F52F2 /* Serivice.swift in Sources */,
 				A20D864829F776C4008F52F2 /* LocationHandler.swift in Sources */,
 				37124B8026FD89AA00210341 /* GlobalFunctions.swift in Sources */,
 				371A2F3F26E9C434009C16A0 /* AppDelegate.swift in Sources */,
 				A2F4F7C929F0FBEA009CFD41 /* LocationInputView.swift in Sources */,
+				A224D2302A1C33590074977A /* ContainerController.swift in Sources */,
 				A27A984629EE4EF300E39D93 /* LocationInputActivationView.swift in Sources */,
 				37124B8226FD939D00210341 /* HomeController.swift in Sources */,
 				A2F014812A0A021C00EFCA96 /* PickupViewController.swift in Sources */,
