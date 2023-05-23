@@ -11,7 +11,7 @@ import Firebase
 class ContainerController: UIViewController {
     //MARK: - Properties
     private let homeController = HomeController()
-    private let menuController = MenuController()
+    private var menuController: MenuController!
     private var isExpanded = false
     private var user: User? {
         didSet {
@@ -47,8 +47,8 @@ class ContainerController: UIViewController {
     }
     
     func configureMenuController(withUser user: User) {
+        menuController = MenuController(user: user)
         addChild(menuController)
-        menuController.user = user
         menuController.didMove(toParent: self)
         menuController.view.frame = CGRect(x: 0, y: 40,
                                            width: self.view.frame.width,

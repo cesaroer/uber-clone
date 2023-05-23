@@ -9,21 +9,25 @@ import UIKit
 
 class MenuController: UITableViewController {
     //MARK: - Properties
-    var user: User? {
-        didSet {
-            
-        }
-    }
+    private let user: User
     private lazy var menuHeader: MenuHeader = {
         let frame = CGRect(x: 0, y: 0,
                            width: self.view.frame.width, height: 140)
         
-        let view = MenuHeader(frame: frame)
-        view.user = user
+        let view = MenuHeader(user: user, frame: frame)
         return view
     }()
     
     //MARK: - LifeCicle
+    
+    init(user: User) {
+        self.user = user
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

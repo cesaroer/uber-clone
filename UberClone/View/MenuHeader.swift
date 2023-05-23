@@ -9,14 +9,7 @@ import UIKit
 
 class MenuHeader: UIView {
     // MARK: - Properties
-    
-    
-    var user: User? {
-        didSet {
-            fullnameLabel.text = user?.fullname
-            emailLabel.text = user?.email
-        }
-    }
+    var user: User
     
     private let profileImageView: UIImageView = {
        let iv = UIImageView()
@@ -24,25 +17,25 @@ class MenuHeader: UIView {
         return iv
     }()
     
-    private let fullnameLabel: UILabel = {
+    private lazy var fullnameLabel: UILabel = {
        let label = UILabel()
         label.textColor = .white
-        label.text = "John Do"
+        label.text = self.user.fullname
         label.font = UIFont.systemFont(ofSize: 16)
         return label
     }()
     
-    private let emailLabel: UILabel = {
+    private lazy var emailLabel: UILabel = {
        let label = UILabel()
         label.textColor = .lightGray
-        label.text = "cesaemeial@com.com"
+        label.text = self.user.email
         label.font = UIFont.systemFont(ofSize: 14)
         return label
     }()
     
     // MARK: - LifeCycle
-
-    override init(frame: CGRect) {
+    init(user: User, frame: CGRect) {
+        self.user = user
         super.init(frame: frame)
         
         backgroundColor = .backgroundColor
@@ -61,6 +54,7 @@ class MenuHeader: UIView {
         addSubview(stack)
         stack.centerY(inView: profileImageView,
                       leftAnchor: profileImageView.rightAnchor, paddingLeft: 20)
+        
     }
     
     required init?(coder: NSCoder) {
