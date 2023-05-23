@@ -28,6 +28,7 @@
 		A217BEF02A061BA000BE4431 /* Trip.swift in Sources */ = {isa = PBXBuildFile; fileRef = A217BEEF2A061BA000BE4431 /* Trip.swift */; };
 		A224D22E2A1C334A0074977A /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A224D22D2A1C334A0074977A /* MenuController.swift */; };
 		A224D2302A1C33590074977A /* ContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A224D22F2A1C33590074977A /* ContainerController.swift */; };
+		A224D2322A1C39F20074977A /* MenuHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A224D2312A1C39F20074977A /* MenuHeader.swift */; };
 		A27A984629EE4EF300E39D93 /* LocationInputActivationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27A984529EE4EF300E39D93 /* LocationInputActivationView.swift */; };
 		A2A6EBB729F3ADF7001C7ED1 /* LocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A6EBB629F3ADF7001C7ED1 /* LocationCell.swift */; };
 		A2F014812A0A021C00EFCA96 /* PickupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F014802A0A021C00EFCA96 /* PickupViewController.swift */; };
@@ -59,6 +60,7 @@
 		A217BEEF2A061BA000BE4431 /* Trip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Trip.swift; path = UberClone/View/Trip.swift; sourceTree = SOURCE_ROOT; };
 		A224D22D2A1C334A0074977A /* MenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		A224D22F2A1C33590074977A /* ContainerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerController.swift; sourceTree = "<group>"; };
+		A224D2312A1C39F20074977A /* MenuHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuHeader.swift; sourceTree = "<group>"; };
 		A27A984529EE4EF300E39D93 /* LocationInputActivationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInputActivationView.swift; sourceTree = "<group>"; };
 		A2A6EBB629F3ADF7001C7ED1 /* LocationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationCell.swift; sourceTree = "<group>"; };
 		A2F014802A0A021C00EFCA96 /* PickupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickupViewController.swift; sourceTree = "<group>"; };
@@ -161,6 +163,7 @@
 				A2F4F7C829F0FBEA009CFD41 /* LocationInputView.swift */,
 				A2A6EBB629F3ADF7001C7ED1 /* LocationCell.swift */,
 				A217BEED2A06000500BE4431 /* RideActionView.swift */,
+				A224D2312A1C39F20074977A /* MenuHeader.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -319,6 +322,7 @@
 				A20D864629F74DD6008F52F2 /* User.swift in Sources */,
 				A2A6EBB729F3ADF7001C7ED1 /* LocationCell.swift in Sources */,
 				3766C3A326EDC2E10044DE48 /* SignUpController.swift in Sources */,
+				A224D2322A1C39F20074977A /* MenuHeader.swift in Sources */,
 				375AE70526EEDCA50039AE45 /* AuthButton.swift in Sources */,
 				A224D22E2A1C334A0074977A /* MenuController.swift in Sources */,
 				A20D864A29F78366008F52F2 /* DriverAnnotation.swift in Sources */,
