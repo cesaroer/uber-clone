@@ -7,6 +7,20 @@
 
 import UIKit
 
+private enum MenuOptions: Int, CaseIterable, CustomStringConvertible {
+    case yourTrips
+    case settings
+    case logout
+    
+    var description: String {
+        switch self {
+        case .yourTrips: return "Your Trips"
+        case .settings: return "Settings"
+        case .logout: return "Log Out"
+        }
+    }
+}
+
 class MenuController: UITableViewController {
     //MARK: - Properties
     private let user: User
@@ -52,9 +66,8 @@ class MenuController: UITableViewController {
 }
 
 extension MenuController {
-    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        MenuOptions.allCases.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -62,7 +75,7 @@ extension MenuController {
                                                  for: indexPath)
         
         var content = cell.defaultContentConfiguration()
-        content.text = "Menu option"
+        content.text = MenuOptions.allCases[indexPath.row].description
         cell.contentConfiguration = content
         return cell
     }
