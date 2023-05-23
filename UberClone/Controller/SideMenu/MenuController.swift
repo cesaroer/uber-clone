@@ -9,11 +9,17 @@ import UIKit
 
 class MenuController: UITableViewController {
     //MARK: - Properties
+    var user: User? {
+        didSet {
+            
+        }
+    }
     private lazy var menuHeader: MenuHeader = {
         let frame = CGRect(x: 0, y: 0,
                            width: self.view.frame.width, height: 140)
         
         let view = MenuHeader(frame: frame)
+        view.user = user
         return view
     }()
     
@@ -48,7 +54,7 @@ extension MenuController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCell(withIdentifier: UITableViewCell.self.description(),
+        let cell = tableView.dequeueReusableCell(withIdentifier: UITableViewCell.self.description(),
                                                  for: indexPath)
         
         var content = cell.defaultContentConfiguration()

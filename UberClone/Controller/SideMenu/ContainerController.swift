@@ -6,12 +6,20 @@
 //
 
 import UIKit
+import Firebase
 
 class ContainerController: UIViewController {
     //MARK: - Properties
     private let homeController = HomeController()
     private let menuController = MenuController()
     private var isExpanded = false
+    private var user: User? {
+        didSet {
+            guard let user = user else { return }
+            configureMenuController(withUser: user)
+            homeController.user = user
+        }
+    }
     
     //MARK: - LifeCicle
     
@@ -19,9 +27,17 @@ class ContainerController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = .backgroundColor
+        fetchUserData()
         configureHomeController()
-        configureMenuController()
     }
+    
+    //MARK: - API
+    private func fetchUserData() {
+        Service.shared.fetchUserData { user in
+            self.user = user
+        }
+    }
+
     //MARK: - Helpers
     func configureHomeController() {
         addChild(homeController)
@@ -30,8 +46,9 @@ class ContainerController: UIViewController {
         view.addSubview(homeController.view)
     }
     
-    func configureMenuController() {
+    func configureMenuController(withUser user: User) {
         addChild(menuController)
+        menuController.user = user
         menuController.didMove(toParent: self)
         menuController.view.frame = CGRect(x: 0, y: 40,
                                            width: self.view.frame.width,

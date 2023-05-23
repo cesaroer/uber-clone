@@ -42,7 +42,7 @@ class HomeController: UIViewController {
 
     private let tableView = UITableView()
     private var searchResults = [MKPlacemark]()
-    private var user: User? {
+    var user: User? {
         didSet {
             locationInputView.user = user
             if user?.accountType == .passgenger {
@@ -126,12 +126,6 @@ class HomeController: UIViewController {
             }
         }catch let error {
             print("DEBUG: Error \(error.localizedDescription)")
-        }
-    }
-
-    func fetchUserData() {
-        Service.shared.fetchUserData { user in
-            self.user = user
         }
     }
     
@@ -238,7 +232,6 @@ class HomeController: UIViewController {
     //MARK: - Helpers
     func configure() {
         configureUI()
-        fetchUserData()
     }
     func configureUI() {
         configureMapView()
