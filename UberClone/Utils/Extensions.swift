@@ -294,9 +294,9 @@ extension UIViewController {
 }
 
 extension UIView {
-    func applyBackgroundBlur(style: UIBlurEffect.Style) {
+    func applyBackgroundBlur(style: UIBlurEffect.Style, mframe: CGRect? = nil) {
         let blurView = UIVisualEffectView()
-        blurView.frame = self.frame
+        blurView.frame = mframe ?? self.frame
         blurView.effect = UIBlurEffect(style: style)
         self.addSubview(blurView)
     }

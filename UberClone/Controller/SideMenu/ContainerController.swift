@@ -13,6 +13,9 @@ class ContainerController: UIViewController {
     private let homeController = HomeController()
     private var menuController: MenuController!
     private var isExpanded = false
+    private let blackView = UIVisualEffectView()
+    private lazy var xOrigin = self.view.frame.width - 80
+
     private var user: User? {
         didSet {
             guard let user = user else { return }
@@ -22,16 +25,31 @@ class ContainerController: UIViewController {
     }
     
     //MARK: - LifeCicle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.backgroundColor = .backgroundColor
-        fetchUserData()
-        configureHomeController()
+        checkIfUserIsLoggedIn()
+    }
+    
+    override var prefersStatusBarHidden: Bool {
+        return isExpanded
+    }
+    
+    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
+        return .slide
     }
     
     //MARK: - API
+    func checkIfUserIsLoggedIn() {
+        if( Auth.auth().currentUser?.uid == nil) {
+            DispatchQueue.main.async {
+                NotificationCenter.default
+                    .post(name: HomeController.NotificationDone, object: nil)
+            }
+        }else {
+            configure()
+        }
+    }
+
     private func fetchUserData() {
         Service.shared.fetchUserData { user in
             self.user = user
@@ -51,6 +69,12 @@ class ContainerController: UIViewController {
     }
 
     //MARK: - Helpers
+    func configure() {
+        view.backgroundColor = .backgroundColor
+        fetchUserData()
+        configureHomeController()
+    }
+
     func configureHomeController() {
         addChild(homeController)
         homeController.delegate = self
@@ -68,14 +92,31 @@ class ContainerController: UIViewController {
                                            width: self.view.frame.width,
                                            height: self.view.frame.height - 40)
         view.insertSubview(menuController.view, at: 0)
+        configureBlackView()
+    }
+
+    func configureBlackView() {
+        let frame = CGRect(x: xOrigin, y: 0,
+                           width: 80, height: self.view.frame.height)
+        blackView.frame = frame
+        blackView.effect = UIBlurEffect(style: .dark)
+        blackView.alpha = 0
+        view.addSubview(blackView)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dissmissMenu))
+        blackView.addGestureRecognizer(tap)
     }
     
     func animateMenu(shouldExpand: Bool, completion: (() -> Void)? = nil ) {
         if shouldExpand {
+           
+            view.bringSubviewToFront(self.blackView)
+            let xOrigin = self.view.frame.width - 80
             UIView.animate(withDuration: 0.5, delay: 0,
                            usingSpringWithDamping: 0.8, initialSpringVelocity: 0,
                            options: .curveEaseInOut) {
-                self.homeController.view.frame.origin.x  = self.view.frame.width - 80
+                self.homeController.view.frame.origin.x  = xOrigin
+                self.blackView.alpha = 0.9
             } completion: { _ in
                 
             }
@@ -84,15 +125,29 @@ class ContainerController: UIViewController {
                            usingSpringWithDamping: 0.8, initialSpringVelocity: 0,
                            options: .curveEaseInOut) {
                 self.homeController.view.frame.origin.x  = 0
+                self.blackView.alpha = 0.0
             } completion: { _ in
                 guard let comp = completion else { return }
                 comp()
             }
         }
+        animateStatusBar()
+    }
+    
+    func animateStatusBar() {
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8,
+                       initialSpringVelocity: 0, options: .curveEaseInOut) {
+            self.setNeedsStatusBarAppearanceUpdate()
+        } completion: { _ in
+            
+        }
     }
     
     //MARK: - Selectors
-    
+    @objc func dissmissMenu() {
+        isExpanded = false
+        animateMenu(shouldExpand: isExpanded)
+    }
 }
 
 //MARK: - HomeControllerDelegate

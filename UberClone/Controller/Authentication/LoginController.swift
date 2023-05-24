@@ -140,7 +140,7 @@ class LoginController: UIViewController {
             }
 
             guard let window = UIApplication.shared.keyWindow,
-                  let controller = window.rootViewController as? HomeController else { return }
+                  let controller = window.rootViewController as? ContainerController else { return }
             controller.configure()
             self.dismiss(animated: true)
         }

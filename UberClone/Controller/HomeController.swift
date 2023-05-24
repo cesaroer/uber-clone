@@ -92,29 +92,8 @@ class HomeController: UIViewController {
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-
-        checkIfUserIsLoggedIn()
+        configureUI()
         enableLocationServices()
-        //signOut()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        guard let trip = trip else { return }
-        
-        
-    }
-
-    //MARK: - Shared API
-    func checkIfUserIsLoggedIn() {
-        if( Auth.auth().currentUser?.uid == nil) {
-            DispatchQueue.main.async {
-                NotificationCenter.default
-                    .post(name: HomeController.NotificationDone, object: nil)
-            }
-        }else {
-            configure()
-        }
     }
     
     //MARK: - PASSENGER API
@@ -218,9 +197,7 @@ class HomeController: UIViewController {
     }
     
     //MARK: - Helpers
-    func configure() {
-        configureUI()
-    }
+
     func configureUI() {
         configureMapView()
         configureRideActionView()

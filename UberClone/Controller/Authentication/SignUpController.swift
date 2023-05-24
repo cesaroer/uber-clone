@@ -104,7 +104,6 @@ public class SignUpController: UIViewController {
         super.viewDidLoad()
         
         configureUI()
-        debugPrint("DEBUG: Location is \(location)")
     }
     
     //MARK: - Helpers
@@ -184,7 +183,7 @@ public class SignUpController: UIViewController {
         REF_USERS.child(uid).updateChildValues(values) { error, dbRef in
             
             guard let window = UIApplication.shared.keyWindow,
-                  let controller = window.rootViewController as? HomeController else { return }
+                  let controller = window.rootViewController as? ContainerController else { return }
             controller.configure()
             self.dismiss(animated: true)
         }
