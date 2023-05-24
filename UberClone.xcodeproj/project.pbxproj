@@ -29,6 +29,8 @@
 		A224D22E2A1C334A0074977A /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A224D22D2A1C334A0074977A /* MenuController.swift */; };
 		A224D2302A1C33590074977A /* ContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A224D22F2A1C33590074977A /* ContainerController.swift */; };
 		A224D2322A1C39F20074977A /* MenuHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A224D2312A1C39F20074977A /* MenuHeader.swift */; };
+		A24D442D2A1EC83F00153FFF /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24D442C2A1EC83F00153FFF /* SettingsViewController.swift */; };
+		A24D442F2A1ECFAF00153FFF /* UserInfoHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24D442E2A1ECFAF00153FFF /* UserInfoHeader.swift */; };
 		A27A984629EE4EF300E39D93 /* LocationInputActivationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27A984529EE4EF300E39D93 /* LocationInputActivationView.swift */; };
 		A2A6EBB729F3ADF7001C7ED1 /* LocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A6EBB629F3ADF7001C7ED1 /* LocationCell.swift */; };
 		A2F014812A0A021C00EFCA96 /* PickupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F014802A0A021C00EFCA96 /* PickupViewController.swift */; };
@@ -61,6 +63,8 @@
 		A224D22D2A1C334A0074977A /* MenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		A224D22F2A1C33590074977A /* ContainerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerController.swift; sourceTree = "<group>"; };
 		A224D2312A1C39F20074977A /* MenuHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuHeader.swift; sourceTree = "<group>"; };
+		A24D442C2A1EC83F00153FFF /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		A24D442E2A1ECFAF00153FFF /* UserInfoHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoHeader.swift; sourceTree = "<group>"; };
 		A27A984529EE4EF300E39D93 /* LocationInputActivationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInputActivationView.swift; sourceTree = "<group>"; };
 		A2A6EBB629F3ADF7001C7ED1 /* LocationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationCell.swift; sourceTree = "<group>"; };
 		A2F014802A0A021C00EFCA96 /* PickupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickupViewController.swift; sourceTree = "<group>"; };
@@ -151,6 +155,7 @@
 				A224D22B2A1C33080074977A /* Authentication */,
 				37124B8126FD939D00210341 /* HomeController.swift */,
 				A2F014802A0A021C00EFCA96 /* PickupViewController.swift */,
+				A24D442C2A1EC83F00153FFF /* SettingsViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -164,6 +169,7 @@
 				A2A6EBB629F3ADF7001C7ED1 /* LocationCell.swift */,
 				A217BEED2A06000500BE4431 /* RideActionView.swift */,
 				A224D2312A1C39F20074977A /* MenuHeader.swift */,
+				A24D442E2A1ECFAF00153FFF /* UserInfoHeader.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -330,8 +336,10 @@
 				A20D864829F776C4008F52F2 /* LocationHandler.swift in Sources */,
 				37124B8026FD89AA00210341 /* GlobalFunctions.swift in Sources */,
 				371A2F3F26E9C434009C16A0 /* AppDelegate.swift in Sources */,
+				A24D442F2A1ECFAF00153FFF /* UserInfoHeader.swift in Sources */,
 				A2F4F7C929F0FBEA009CFD41 /* LocationInputView.swift in Sources */,
 				A224D2302A1C33590074977A /* ContainerController.swift in Sources */,
+				A24D442D2A1EC83F00153FFF /* SettingsViewController.swift in Sources */,
 				A27A984629EE4EF300E39D93 /* LocationInputActivationView.swift in Sources */,
 				37124B8226FD939D00210341 /* HomeController.swift in Sources */,
 				A2F014812A0A021C00EFCA96 /* PickupViewController.swift in Sources */,
