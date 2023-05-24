@@ -38,6 +38,18 @@ class ContainerController: UIViewController {
         }
     }
 
+    func signOut() {
+        do {
+            try Auth.auth().signOut()
+            DispatchQueue.main.async {
+                NotificationCenter.default
+                    .post(name: HomeController.NotificationDone, object: nil)
+            }
+        }catch let error {
+            print("DEBUG: Error \(error.localizedDescription)")
+        }
+    }
+
     //MARK: - Helpers
     func configureHomeController() {
         addChild(homeController)
@@ -48,6 +60,8 @@ class ContainerController: UIViewController {
     
     func configureMenuController(withUser user: User) {
         menuController = MenuController(user: user)
+        menuController.delegate = self
+
         addChild(menuController)
         menuController.didMove(toParent: self)
         menuController.view.frame = CGRect(x: 0, y: 40,
@@ -56,7 +70,7 @@ class ContainerController: UIViewController {
         view.insertSubview(menuController.view, at: 0)
     }
     
-    func animateMenu(shouldExpand: Bool) {
+    func animateMenu(shouldExpand: Bool, completion: (() -> Void)? = nil ) {
         if shouldExpand {
             UIView.animate(withDuration: 0.5, delay: 0,
                            usingSpringWithDamping: 0.8, initialSpringVelocity: 0,
@@ -65,14 +79,14 @@ class ContainerController: UIViewController {
             } completion: { _ in
                 
             }
-
         } else {
             UIView.animate(withDuration: 0.5, delay: 0,
                            usingSpringWithDamping: 0.8, initialSpringVelocity: 0,
                            options: .curveEaseInOut) {
                 self.homeController.view.frame.origin.x  = 0
             } completion: { _ in
-                
+                guard let comp = completion else { return }
+                comp()
             }
         }
     }
@@ -81,10 +95,38 @@ class ContainerController: UIViewController {
     
 }
 
+//MARK: - HomeControllerDelegate
 extension ContainerController: HomeControllerDelegate {
     func handleMenuToggle() {
         isExpanded.toggle()
         animateMenu(shouldExpand: isExpanded)
+    }
+}
+
+//MARK: - MenuControllerDelegate
+extension ContainerController: MenuControllerDelegate {
+    func didSelectOption(option: MenuOptions) {
+        isExpanded.toggle()
+        animateMenu(shouldExpand: isExpanded) { 
+            switch option {
+            case .yourTrips:
+                break
+            case .settings:
+                break
+            case .logout:
+                let alert = UIAlertController(title: nil, message: "Seguro deseas cerrar sesion?",
+                                              preferredStyle: .actionSheet)
+                let logoutAction = UIAlertAction(title: "Log Out", style: .destructive) { _ in
+                    self.signOut()
+                }
+
+                let cancel = UIAlertAction(title: "Cancel", style: .cancel)
+                alert.addAction(logoutAction)
+                alert.addAction(cancel)
+                
+                self.present(alert, animated: true)
+            }
+        }
     }
 }
 

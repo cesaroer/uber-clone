@@ -7,7 +7,7 @@
 
 import UIKit
 
-private enum MenuOptions: Int, CaseIterable, CustomStringConvertible {
+enum MenuOptions: Int, CaseIterable, CustomStringConvertible {
     case yourTrips
     case settings
     case logout
@@ -21,8 +21,13 @@ private enum MenuOptions: Int, CaseIterable, CustomStringConvertible {
     }
 }
 
+protocol MenuControllerDelegate: AnyObject {
+    func didSelectOption(option: MenuOptions)
+}
+
 class MenuController: UITableViewController {
     //MARK: - Properties
+    weak var delegate: MenuControllerDelegate?
     private let user: User
     private lazy var menuHeader: MenuHeader = {
         let frame = CGRect(x: 0, y: 0,
@@ -65,6 +70,7 @@ class MenuController: UITableViewController {
     
 }
 
+//MARK: - TABLE VIEW DELEGATES
 extension MenuController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         MenuOptions.allCases.count
@@ -77,6 +83,12 @@ extension MenuController {
         var content = cell.defaultContentConfiguration()
         content.text = MenuOptions.allCases[indexPath.row].description
         cell.contentConfiguration = content
+        cell.selectionStyle = .none
         return cell
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let option = MenuOptions(rawValue: indexPath.row) else { return }
+        delegate?.didSelectOption(option: option)
     }
 }

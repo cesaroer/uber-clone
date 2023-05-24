@@ -117,18 +117,6 @@ class HomeController: UIViewController {
         }
     }
     
-    func signOut() {
-        do {
-            try Auth.auth().signOut()
-            DispatchQueue.main.async {
-                NotificationCenter.default
-                    .post(name: HomeController.NotificationDone, object: nil)
-            }
-        }catch let error {
-            print("DEBUG: Error \(error.localizedDescription)")
-        }
-    }
-    
     //MARK: - PASSENGER API
 
     /// Observe for user
