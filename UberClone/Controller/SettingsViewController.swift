@@ -7,6 +7,25 @@
 
 import UIKit
 
+enum LocationType: Int, CaseIterable, CustomStringConvertible {
+    case home
+    case work
+    
+    var description: String {
+        switch self {
+        case .home: return "Home"
+        case .work: return "Work"
+        }
+    }
+
+    var subtitle: String {
+        switch self {
+        case .home: return "Add Home"
+        case .work: return "Add Work"
+        }
+    }
+}
+
 class SettingsViewController: UITableViewController {
     // MARK: - Properties
     var user: User
@@ -57,5 +76,42 @@ class SettingsViewController: UITableViewController {
     
     @objc func handleDissmisal() {
         self.dismiss(animated: true)
+    }
+}
+
+// MARK: - TABLE VIEW DELEGATES
+extension SettingsViewController {
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        LocationType.allCases.count
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        40
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = UIView()
+        view.backgroundColor = .backgroundColor
+        
+        let title = UILabel()
+        title.font = UIFont.systemFont(ofSize: 16)
+        title.textColor = .white
+        view.addSubview(title)
+        title.centerY(inView: view, leftAnchor: view.leftAnchor, paddingLeft: 16)
+        
+        return view
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: LocationCell.reuseIdentifier,
+                                                 for: indexPath) as! LocationCell
+
+        cell.type = LocationType(rawValue: indexPath.row)
+        return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let type = LocationType(rawValue: indexPath.row)
     }
 }
