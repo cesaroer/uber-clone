@@ -29,6 +29,7 @@ enum LocationType: Int, CaseIterable, CustomStringConvertible {
 class SettingsViewController: UITableViewController {
     // MARK: - Properties
     var user: User
+    private let locationManager = LocationHandler.shared.locationManager
     private lazy var infoHeader:  UserInfoHeader = {
         let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 110)
         let view =  UserInfoHeader(user: self.user, frame: frame)
@@ -60,6 +61,7 @@ class SettingsViewController: UITableViewController {
         tableView.register(LocationCell.self,
                            forCellReuseIdentifier: LocationCell.reuseIdentifier)
         tableView.tableHeaderView = infoHeader
+        tableView.tableFooterView = UIView()
     }
     
     func configureNavBr() {
@@ -112,6 +114,9 @@ extension SettingsViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let type = LocationType(rawValue: indexPath.row)
+        guard let type = LocationType(rawValue: indexPath.row) ,
+              let location = locationManager?.location else { return }
+        let vc = AddLocationViewController(type: type, location: location)
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
