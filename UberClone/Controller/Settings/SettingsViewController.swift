@@ -117,6 +117,18 @@ extension SettingsViewController {
         guard let type = LocationType(rawValue: indexPath.row) ,
               let location = locationManager?.location else { return }
         let vc = AddLocationViewController(type: type, location: location)
+        vc.delegate = self
+
         self.navigationController?.pushViewController(vc, animated: true)
     }
+}
+
+// MARK: - AddLocationControllerDelegate
+extension SettingsViewController: AddLocationControllerDelegate {
+    func updateLocation(locationString: String, type: LocationType) {
+        PassengerService.shared.saveFavoriteLocation(locationName: locationString, type: type) { (err,ref) in
+            self.dismiss(animated: true)
+        }
+    }
+    
 }
