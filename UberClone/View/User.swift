@@ -19,8 +19,14 @@ struct User {
     var email: String
     var accountType : AccountType!
     var location: CLLocation?
+    var homeLocation: String?
+    var workLocation: String?
     
-    init(fullname: String, email: String, accountType: AccountType, uid: String) {
+    init(fullname: String,
+         email: String,
+         accountType: AccountType,
+         uid: String)
+    {
         self.fullname = fullname
         self.email = email
         self.accountType = accountType
@@ -28,11 +34,20 @@ struct User {
     }
     
     init(uid: String, dictionary: [String: Any]) {
+        self.uid = uid
         self.fullname = dictionary["fullname"] as? String ?? ""
         self.email = dictionary["email"] as? String ?? ""
+        
+        if let home = dictionary["homeLocation"] as? String {
+            self.homeLocation = home
+        }
+        
+        if let work = dictionary["workLocation"] as? String {
+            self.workLocation = work
+        }
+        
         if let index = dictionary["accountTypeIndex"] as? Int {
             self.accountType = AccountType(rawValue: index)
         }
-        self.uid = uid
     }
 }

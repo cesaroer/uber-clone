@@ -53,8 +53,15 @@ class SettingsViewController: UITableViewController {
         configureTableView()
         configureNavBr()
     }
+
     // MARK: - Helpers
-    
+    func locationText(fortYype type: LocationType ) -> String {
+        switch type {
+        case .home: return user.homeLocation ?? type.subtitle
+        case .work: return user.workLocation ?? type.subtitle
+        }
+    }
+
     func configureTableView() {
         tableView.rowHeight = 60
         tableView.backgroundColor = .white
@@ -109,7 +116,9 @@ extension SettingsViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: LocationCell.reuseIdentifier,
                                                  for: indexPath) as! LocationCell
 
-        cell.type = LocationType(rawValue: indexPath.row)
+        guard let type = LocationType(rawValue: indexPath.row) else { return cell }
+        cell.titleLabel.text = type.description
+        cell.addressLabel.text = locationText(fortYype: type)
         return cell
     }
     
@@ -127,7 +136,15 @@ extension SettingsViewController {
 extension SettingsViewController: AddLocationControllerDelegate {
     func updateLocation(locationString: String, type: LocationType) {
         PassengerService.shared.saveFavoriteLocation(locationName: locationString, type: type) { (err,ref) in
-            self.dismiss(animated: true)
+
+            self.navigationController?.popViewController(animated: true)
+            switch type {
+            case .home:
+                self.user.homeLocation = locationString
+            case .work:
+                self.user.workLocation = locationString
+            }
+            self.tableView.reloadData()
         }
     }
     

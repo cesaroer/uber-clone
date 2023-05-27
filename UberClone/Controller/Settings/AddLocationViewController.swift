@@ -105,7 +105,8 @@ extension AddLocationViewController {
         let result = searchResults[indexPath.row]
         let title = result.title
         let subtitle = result.subtitle
-        let locationString = title + " " + subtitle
+        var locationString = title + " " + subtitle
+        locationString = locationString.replacingOccurrences(of: ", United States", with: "")
         delegate?.updateLocation(locationString: locationString, type: self.type)
     }
 }
