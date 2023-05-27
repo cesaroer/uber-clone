@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol SettingsControllerDelegate: AnyObject {
+    func updateUser(_ controller: SettingsViewController, user: User)
+}
+
 enum LocationType: Int, CaseIterable, CustomStringConvertible {
     case home
     case work
@@ -29,12 +33,15 @@ enum LocationType: Int, CaseIterable, CustomStringConvertible {
 class SettingsViewController: UITableViewController {
     // MARK: - Properties
     var user: User
+    weak var delegate: SettingsControllerDelegate?
     private let locationManager = LocationHandler.shared.locationManager
     private lazy var infoHeader:  UserInfoHeader = {
         let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 110)
         let view =  UserInfoHeader(user: self.user, frame: frame)
         return view
     }()
+    var userInfoUpdated = false
+
     // MARK: - LifeCycle
     
     init(user: User) {
@@ -84,6 +91,9 @@ class SettingsViewController: UITableViewController {
     // MARK: - Selectors
     
     @objc func handleDissmisal() {
+        if self.userInfoUpdated {
+            self.delegate?.updateUser(self, user: self.user)
+        }
         self.dismiss(animated: true)
     }
 }
@@ -136,6 +146,12 @@ extension SettingsViewController {
 extension SettingsViewController: AddLocationControllerDelegate {
     func updateLocation(locationString: String, type: LocationType) {
         PassengerService.shared.saveFavoriteLocation(locationName: locationString, type: type) { (err,ref) in
+            
+            self.userInfoUpdated = err == nil
+            
+            if self.userInfoUpdated {
+                self.delegate?.updateUser(self, user: self.user)
+            }
 
             self.navigationController?.popViewController(animated: true)
             switch type {
@@ -144,6 +160,9 @@ extension SettingsViewController: AddLocationControllerDelegate {
             case .work:
                 self.user.workLocation = locationString
             }
+            
+
+
             self.tableView.reloadData()
         }
     }
