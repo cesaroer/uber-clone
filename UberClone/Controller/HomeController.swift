@@ -252,6 +252,8 @@ class HomeController: UIViewController {
     }
 
     func configureSavedUserLocations() {
+        savedLocations.removeAll()
+
         if let homeLocation = user?.homeLocation {
             geoCodeAddressString(address: homeLocation)
         }
@@ -609,7 +611,10 @@ extension HomeController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let destinationCoordinates = searchResults[indexPath.row].coordinate
+        let section = indexPath.section
+        let destinationCoordinates = section == 0 ?
+                                    savedLocations[indexPath.row].coordinate :
+                                    searchResults[indexPath.row].coordinate
         let mark = MKPlacemark(coordinate: destinationCoordinates)// to get accuracy
 
         configureActionButton(config: .dismissActionView)
@@ -619,8 +624,9 @@ extension HomeController: UITableViewDelegate, UITableViewDataSource {
             self.locationInputView.removeFromSuperview()
             //FIXME: - here just and fixme mark example
             self.mapView.addAnnotationAndSelect(forCoordinates: destinationCoordinates)
+            let destination = section == 0 ? self.savedLocations[indexPath.row] : self.searchResults[indexPath.row]
             self.animateRideActionView(shouldShow: true,
-                                       destination: self.searchResults[indexPath.row],
+                                       destination: destination,
                                        config: .requestRide)
         }
     }
