@@ -22,7 +22,7 @@ class LocationCell: UITableViewCell {
      public let titleLabel: UILabel = {
        let label = UILabel()
         label.textColor = .darkGray
-        label.font = UIFont.systemFont(ofSize: 14)
+        label.font = UIFont.boldSystemFont(ofSize: 14)
         return label
     }()
     

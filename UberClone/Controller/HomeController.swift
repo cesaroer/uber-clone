@@ -42,6 +42,8 @@ class HomeController: UIViewController {
 
     private let tableView = UITableView()
     private var searchResults = [MKPlacemark]()
+    private var savedLocations = [MKPlacemark]()
+
     var user: User? {
         didSet {
             locationInputView.user = user
@@ -49,6 +51,7 @@ class HomeController: UIViewController {
                 fetchDrivers()
                 configureLocationInputActivationView()
                 observeCurrentTrip()
+                configureSavedUserLocations()
             }else {
                 observeTrips()
             }
@@ -246,6 +249,26 @@ class HomeController: UIViewController {
         mapView.showsUserLocation = true
         mapView.userTrackingMode = .follow
         mapView.delegate = self
+    }
+
+    func configureSavedUserLocations() {
+        if let homeLocation = user?.homeLocation {
+            geoCodeAddressString(address: homeLocation)
+        }
+
+        if let workLocation = user?.workLocation {
+            geoCodeAddressString(address: workLocation)
+        }
+    }
+
+    func geoCodeAddressString(address: String) {
+        let geocoder = CLGeocoder()
+        geocoder.geocodeAddressString(address) { placemak, err in
+            guard let clPlacemark = placemak?.first else { return }
+            let placekm = MKPlacemark(placemark: clPlacemark)
+            self.savedLocations.append(placekm)
+            self.tableView.reloadData()
+        }
     }
     
     func configureTableView() {
@@ -565,11 +588,16 @@ extension HomeController: UITableViewDelegate, UITableViewDataSource {
         if indexPath.section == 1 {
             cell.placeMark = searchResults[indexPath.row]
         }
+        
+        if indexPath.section == 0 && savedLocations.count > 0 {
+            cell.placeMark = savedLocations[indexPath.row]
+        }
+
         return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return section == 0 ? 2 : searchResults.count
+        return section == 0 ? savedLocations.count : searchResults.count
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -577,7 +605,7 @@ extension HomeController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Test"
+        return section == 0 ? "Favorite Locations" : "Results"
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
