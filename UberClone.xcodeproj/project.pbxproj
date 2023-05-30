@@ -25,6 +25,7 @@
 		A20D864629F74DD6008F52F2 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20D864529F74DD6008F52F2 /* User.swift */; };
 		A20D864829F776C4008F52F2 /* LocationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20D864729F776C4008F52F2 /* LocationHandler.swift */; };
 		A20D864A29F78366008F52F2 /* DriverAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20D864929F78366008F52F2 /* DriverAnnotation.swift */; };
+		A20E04E02A258E090097AB6C /* uber_sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A20E04DF2A258E090097AB6C /* uber_sound.mp3 */; };
 		A217BEEE2A06000500BE4431 /* RideActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A217BEED2A06000500BE4431 /* RideActionView.swift */; };
 		A217BEF02A061BA000BE4431 /* Trip.swift in Sources */ = {isa = PBXBuildFile; fileRef = A217BEEF2A061BA000BE4431 /* Trip.swift */; };
 		A224D22E2A1C334A0074977A /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A224D22D2A1C334A0074977A /* MenuController.swift */; };
@@ -61,6 +62,7 @@
 		A20D864529F74DD6008F52F2 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = User.swift; path = UberClone/View/User.swift; sourceTree = SOURCE_ROOT; };
 		A20D864729F776C4008F52F2 /* LocationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationHandler.swift; sourceTree = "<group>"; };
 		A20D864929F78366008F52F2 /* DriverAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DriverAnnotation.swift; path = UberClone/Utils/DriverAnnotation.swift; sourceTree = SOURCE_ROOT; };
+		A20E04DF2A258E090097AB6C /* uber_sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = uber_sound.mp3; sourceTree = "<group>"; };
 		A217BEED2A06000500BE4431 /* RideActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideActionView.swift; sourceTree = "<group>"; };
 		A217BEEF2A061BA000BE4431 /* Trip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Trip.swift; path = UberClone/View/Trip.swift; sourceTree = SOURCE_ROOT; };
 		A224D22D2A1C334A0074977A /* MenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 		371A2F5226E9C5C5009C16A0 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				A20E04DE2A258E090097AB6C /* Sounds */,
 				371A2F5A26E9DC0F009C16A0 /* Extensions.swift */,
 				37124B7F26FD89AA00210341 /* GlobalFunctions.swift */,
 				A20D864729F776C4008F52F2 /* LocationHandler.swift */,
@@ -187,6 +190,14 @@
 				A217BEEF2A061BA000BE4431 /* Trip.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		A20E04DE2A258E090097AB6C /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				A20E04DF2A258E090097AB6C /* uber_sound.mp3 */,
+			);
+			path = Sounds;
 			sourceTree = "<group>";
 		};
 		A224D22B2A1C33080074977A /* Authentication */ = {
@@ -286,6 +297,7 @@
 				371A2F4B26E9C439009C16A0 /* LaunchScreen.storyboard in Resources */,
 				375AE70726EEE2900039AE45 /* GoogleService-Info.plist in Resources */,
 				371A2F4826E9C439009C16A0 /* Assets.xcassets in Resources */,
+				A20E04E02A258E090097AB6C /* uber_sound.mp3 in Resources */,
 				371A2F4626E9C434009C16A0 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

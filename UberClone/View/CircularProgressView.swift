@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class CircularProgressView: UIView {
 
@@ -13,6 +14,7 @@ class CircularProgressView: UIView {
     var progressLayer: CAShapeLayer!
     var trackLayer: CAShapeLayer!
     var pulsatinLayer: CAShapeLayer!
+    var audioPlayer: AVAudioPlayer?
 
     // MARK: - Lifecycle
     override init(frame: CGRect) {
@@ -22,6 +24,10 @@ class CircularProgressView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        audioPlayer = nil
     }
 
     // MARK: - Helpers
@@ -60,7 +66,7 @@ class CircularProgressView: UIView {
     func animatePulsatingLAyer() {
         let animation = CABasicAnimation(keyPath: "transform.scale")
         animation.toValue = 1.25
-        animation.duration = 0.8
+        animation.duration = 1
         animation.timingFunction = CAMediaTimingFunction(name: .easeOut)
         animation.autoreverses = true
         animation.repeatCount = Float.infinity
@@ -83,5 +89,12 @@ class CircularProgressView: UIView {
         progressLayer.add(animation, forKey: "animateProgress")
         
         CATransaction.commit()
+    }
+
+    func playAudio() {
+        let url = Bundle.main.url(forResource: "uber_sound", withExtension: "mp3")
+        audioPlayer = try! AVAudioPlayer(contentsOf: url!)
+        audioPlayer?.numberOfLoops = 3
+        audioPlayer?.play()
     }
 }

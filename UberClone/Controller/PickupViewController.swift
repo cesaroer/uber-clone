@@ -123,6 +123,7 @@ class PickupViewController: UIViewController {
     }
     
     @objc func animateProgress() {
+        circularProgressView.playAudio()
         circularProgressView.animatePulsatingLAyer()
         circularProgressView.setProgressWithAnimationDuration(duration: 10.0, toValue: 0) {
             
