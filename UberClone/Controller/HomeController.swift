@@ -113,8 +113,6 @@ class HomeController: UIViewController {
                 break
             case .denied:
                 self.shouldPresentLoadingView(false)
-                
-                
                 PassengerService.shared.deleteTrip { erro, ref in
                     self.centerMapOnUserLocation()
                     self.configureActionButton(config: .showMenu)

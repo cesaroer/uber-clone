@@ -22,6 +22,8 @@ struct User {
     var homeLocation: String?
     var workLocation: String?
     
+    var firstInitial: String { return String(fullname.prefix(1)) }
+    
     init(fullname: String,
          email: String,
          accountType: AccountType,

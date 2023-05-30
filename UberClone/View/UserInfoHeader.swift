@@ -11,10 +11,21 @@ class UserInfoHeader: UIView {
 
     // MARK: - Properties
     var user: User
-    private let profileImageView: UIImageView = {
-       let iv = UIImageView()
-        iv.backgroundColor = .lightGray
-        return iv
+    private lazy var profileImageView: UIView = {
+       let v = UIView()
+        v.backgroundColor = .black
+        v.addSubview(initialLabel)
+        initialLabel.centerX(inView: v)
+        initialLabel.centerY(inView: v)
+        return v
+    }()
+
+    private lazy var initialLabel: UILabel = {
+       let label = UILabel()
+        label.textColor = .white
+        label.text = self.user.firstInitial
+        label.font = UIFont.systemFont(ofSize: 28)
+        return label
     }()
     
     private lazy var fullnameLabel: UILabel = {
