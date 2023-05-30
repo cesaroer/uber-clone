@@ -96,7 +96,7 @@ class PickupViewController: UIViewController {
 
         view.addSubview(pickupLabel)
         pickupLabel.centerX(inView: self.view)
-        pickupLabel.anchor(top: circularProgressView.bottomAnchor, paddingTop: 32)
+        pickupLabel.anchor(top: circularProgressView.bottomAnchor, paddingTop: 40)
 
         view.addSubview(acceptTripBtn)
         acceptTripBtn.anchor(top: pickupLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor,paddingTop: 16, paddingLeft: 32, paddingRight: 32, height: 50)
@@ -124,7 +124,7 @@ class PickupViewController: UIViewController {
     
     @objc func animateProgress() {
         circularProgressView.animatePulsatingLAyer()
-        circularProgressView.setProgressWithAnimationDuration(duration: 5.0, value: 0) {
+        circularProgressView.setProgressWithAnimationDuration(duration: 10.0, toValue: 0) {
             
         }
     }

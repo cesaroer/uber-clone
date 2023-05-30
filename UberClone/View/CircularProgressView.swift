@@ -26,7 +26,7 @@ class CircularProgressView: UIView {
 
     // MARK: - Helpers
     func configurecircleLayers() {
-        pulsatinLayer = circleShapeLayer(strokeColor: .clear, fillColor: .blue)
+        pulsatinLayer = circleShapeLayer(strokeColor: .clear, fillColor: .mainBlueTint.withAlphaComponent(0.5))
         layer.addSublayer(pulsatinLayer)
         
         trackLayer = circleShapeLayer(strokeColor: .clear, fillColor: .clear)
@@ -69,7 +69,7 @@ class CircularProgressView: UIView {
     }
 
     func setProgressWithAnimationDuration(duration: TimeInterval,
-                                          value: Float, completion: @escaping() -> Void){
+                                          toValue: Float, completion: @escaping() -> Void){
         
         CATransaction.begin()
         CATransaction.setCompletionBlock(completion)
@@ -77,9 +77,9 @@ class CircularProgressView: UIView {
         let animation = CABasicAnimation(keyPath: "strokeEnd")
         animation.duration = duration
         animation.fromValue = 1
-        animation.toValue = value
+        animation.toValue = toValue
         animation.timingFunction = CAMediaTimingFunction(name: .linear)
-        progressLayer.strokeEnd = CGFloat(value)
+        progressLayer.strokeEnd = CGFloat(toValue)
         progressLayer.add(animation, forKey: "animateProgress")
         
         CATransaction.commit()
