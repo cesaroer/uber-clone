@@ -111,6 +111,18 @@ class HomeController: UIViewController {
             switch state {
             case .requested:
                 break
+            case .denied:
+                self.shouldPresentLoadingView(false)
+                
+                
+                PassengerService.shared.deleteTrip { erro, ref in
+                    self.centerMapOnUserLocation()
+                    self.configureActionButton(config: .showMenu)
+                    self.presentAlertController(title: "Ups!",
+                                                withMessage: "It looks we couldnt find a driver, please try again")
+                    self.locationInputActivationView.alpha = 1
+                    self.removeAnnotationsAndOverlays()
+                }
             case .accepted:
                 self.shouldPresentLoadingView(false)
                 self.removeAnnotationsAndOverlays()

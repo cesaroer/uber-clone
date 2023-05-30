@@ -126,7 +126,9 @@ class PickupViewController: UIViewController {
         circularProgressView.playAudio()
         circularProgressView.animatePulsatingLAyer()
         circularProgressView.setProgressWithAnimationDuration(duration: 10.0, toValue: 0) {
-            
+            DriverService.shared.updateTripState(trip: self.trip, state: .denied) { err, ref in
+                self.dismiss(animated: true)
+            }
         }
     }
 
