@@ -17,6 +17,7 @@ class CircularProgressView: UIView {
     // MARK: - Lifecycle
     override init(frame: CGRect) {
         super.init(frame: frame)
+        configurecircleLayers()
     }
     
     required init?(coder: NSCoder) {
@@ -54,5 +55,33 @@ class CircularProgressView: UIView {
         layer.position = self.center
 
         return layer
+    }
+
+    func animatePulsatingLAyer() {
+        let animation = CABasicAnimation(keyPath: "transform.scale")
+        animation.toValue = 1.25
+        animation.duration = 0.8
+        animation.timingFunction = CAMediaTimingFunction(name: .easeOut)
+        animation.autoreverses = true
+        animation.repeatCount = Float.infinity
+        
+        pulsatinLayer.add(animation, forKey: "pulsing")
+    }
+
+    func setProgressWithAnimationDuration(duration: TimeInterval,
+                                          value: Float, completion: @escaping() -> Void){
+        
+        CATransaction.begin()
+        CATransaction.setCompletionBlock(completion)
+        
+        let animation = CABasicAnimation(keyPath: "strokeEnd")
+        animation.duration = duration
+        animation.fromValue = 1
+        animation.toValue = value
+        animation.timingFunction = CAMediaTimingFunction(name: .linear)
+        progressLayer.strokeEnd = CGFloat(value)
+        progressLayer.add(animation, forKey: "animateProgress")
+        
+        CATransaction.commit()
     }
 }
